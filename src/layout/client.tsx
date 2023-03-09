@@ -1,10 +1,11 @@
-import { AppShell, useMantineTheme } from '@mantine/core'
-
 import { NavItems } from '@/components/client/NavItems'
 import HeaderComponent from '@/components/common/Header'
 import NaviComponent from '@/components/common/Nav'
+import useStore from '@/store'
+import { AppShell, useMantineTheme } from '@mantine/core'
 import Head from 'next/head'
-import { FC, useState } from 'react'
+import Router from 'next/router'
+import { FC, useEffect, useState } from 'react'
 
 type Props = {
   title: string
@@ -15,6 +16,19 @@ type Props = {
 const ClientLayout: FC<Props> = ({ title, active, children }) => {
   const theme = useMantineTheme()
   const [opened, setOpened] = useState(false)
+  const session = useStore((state) => state.session)
+  const sessionUser = useStore((state) => state.sessionUser)
+
+  useEffect(() => {
+    if (session) {
+      if (sessionUser?.role !== "client") {
+        Router.push('/client/dashboard')
+      }
+    } else {
+      Router.push('/')
+    }
+  }, [sessionUser])
+  
   return (
     <>
       <Head>
