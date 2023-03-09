@@ -3,7 +3,7 @@ import useStore from "@/store"
 import { editedQuestionnaire, Questionnaire } from "@/types/types"
 import { useMutation } from "react-query"
 
-export const useQuestionnaire = () => {
+export const useQuestionnaireMutate = () => {
   // Reset
   const reset = useStore((state) => state.resetEditedQuestionnaire)
 
@@ -58,5 +58,5 @@ export const useQuestionnaire = () => {
     }
   )
 
-  return [createQuestionnaire, updateQuestionnaire]
+  return { createQuestionnaire, updateQuestionnaire }
 }
