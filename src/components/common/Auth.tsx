@@ -1,6 +1,8 @@
+import { getUser } from '@/fetch/user'
 import { useMutateAuth } from '@/hooks/auth/useMutate'
 import { supabase } from '@/libs/supabase'
 import useStore from '@/store'
+import { roleLocation } from '@/utils'
 import {
   Anchor,
   Button,
@@ -17,25 +19,38 @@ import { FormEvent, useEffect, useState } from 'react'
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
-  
   const router = useRouter()
   const session = useStore((state) => state.session)
   const setSession = useStore((state) => state.setSession)
+  const sessionUser = useStore((state) => state.sessionUser)
+  const setSessionUser = useStore((state) => state.setSessionUser)
   const { email, setEmail, password, setPassword, loginMutation, registerMutation } =
     useMutateAuth()
 
   useEffect(() => {
-    console.group('useEffect')
-    console.log(supabase.auth.session())
     setSession(supabase.auth.session())
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
-    if (session) {
-      router.push('/client/dashboard')
-    }
-    console.groupEnd()
   }, [setSession])
+
+  useEffect(() => {
+    const f = async () => {
+      let user = null
+      if (session) {
+        if (!sessionUser) {
+          user = await getUser(session?.user?.id as string)
+          if (user) {
+            await setSessionUser(user)
+          } else {
+            router.push('/error/non_booth')
+          }
+        }
+        roleLocation(user?.role)
+      }
+    }
+    f()
+  }, [session])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
