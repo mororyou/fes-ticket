@@ -12,3 +12,18 @@ export type User = {
   role: string
   created_at: string
 }
+
+export type Questionnaire = {
+  id: number
+  booth_id: string
+  contents: object | null
+  delete_flg: boolean
+  created_at: string
+  updated_At: string
+}
+
+export type editedQuestionnaire = {
+  id: number
+  contents: object | null
+  delete_flg: boolean
+}
