@@ -47,6 +47,7 @@ const Questionnaire = () => {
 
   const submitConfirmHandler = () => {
     console.group('confirm handler')
+
     console.groupEnd()
   }
 
@@ -98,6 +99,37 @@ const Questionnaire = () => {
               }}
             >
               項目追加
+            </Button>
+          </Paper>
+        </div>
+
+        <div className="col-span-12 items-center justify-center">
+          <Paper
+            shadow={'xs'}
+            p="xl"
+            className="flex items-center justify-start gap-x-12"
+          >
+            <Button
+              radius={'xs'}
+              size="md"
+              color="grape"
+              onClick={(e) => {
+                e.preventDefault()
+                submitConfirmHandler()
+              }}
+            >
+              確認
+            </Button>
+
+            <Button
+              radius={'xs'}
+              size="md"
+              onClick={(e) => {
+                e.preventDefault()
+                submitHandler()
+              }}
+            >
+              登録
             </Button>
           </Paper>
         </div>
