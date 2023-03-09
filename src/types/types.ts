@@ -15,11 +15,11 @@ export type User = {
 
 export type Questionnaire = {
   id: number
-  booth_id: string
+  booth_id: string | undefined
   contents: object | null
   delete_flg: boolean
   created_at: string
-  updated_At: string
+  updated_at: string
 }
 
 export type editedQuestionnaire = {
