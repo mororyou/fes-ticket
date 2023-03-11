@@ -1,4 +1,5 @@
 import { reactQueryOptions } from '@/constant/reactQuery'
+import { AuthProvider } from '@/context/AuthContext'
 import '@/styles/globals.css'
 import { MantineProvider } from '@mantine/core'
 import type { AppProps } from 'next/app'
@@ -22,7 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </MantineProvider>

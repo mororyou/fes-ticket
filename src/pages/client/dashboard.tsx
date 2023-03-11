@@ -2,7 +2,7 @@ import ClientLayout from "@/layout/client"
 
 const Dashboard = () => {
   return (
-    <ClientLayout title="Dashboard" active={'dashboard'}>
+    <ClientLayout title="Dashboard" error={false}>
       <div>
         ClientLayout
       </div>
