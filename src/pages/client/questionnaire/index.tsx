@@ -1,18 +1,27 @@
 import { QuestionnaireFrom } from "@/components/client/forms/Questionnaire"
 import Title from "@/components/common/Title"
+import { useAuthContext } from "@/context/AuthContext"
+import { getQuestionnaire } from "@/fetch/questionnaire"
 import { useQuestionnaireMutate } from "@/hooks/questionnaire/useMutate"
 import ClientLayout from "@/layout/client"
-import useStore from "@/store"
+import { Questionnaire } from "@/types/types"
 import { Paper } from '@mantine/core'
 import { IconSignature } from '@tabler/icons'
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const Questionnaire = () => {
-  const edited = useStore((state) => state.editedQuestionnaire)
-  const update = useStore((state) => state.updatedEditedQuestionnaire)
   const {createQuestionnaire, updateQuestionnaire} = useQuestionnaireMutate()
-
+  const {currentUser} = useAuthContext()
+  const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null)
+  
   useEffect(() => {
+    const f = async () => {
+      if(currentUser !== undefined && currentUser?.boothId !== null) {
+        const res = await getQuestionnaire(currentUser?.boothId)
+        setQuestionnaire(res)
+      }
+    }
+    f()
   }, [])
   
   return (
@@ -30,10 +39,10 @@ const Questionnaire = () => {
               フォーム項目
             </h4>
             <QuestionnaireFrom
-              edited={edited}
-              update={update}
+              questionnaire={questionnaire}
               createMutation={createQuestionnaire}
               updateMutation={updateQuestionnaire}
+              boothId={currentUser?.boothId as string}
             />
           </Paper>
         </div>
