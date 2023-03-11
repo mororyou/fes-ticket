@@ -1,8 +1,11 @@
-import { supabase } from '@/libs/supabase'
+import firebaseApp from '@/libs/firebase/config'
+import errorMsgHandler from '@/libs/firebase/error'
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from 'react'
 import { useMutation } from 'react-query'
 
 export const useMutateAuth = () => {
+  const auth = getAuth(firebaseApp)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const reset = () => {
@@ -10,37 +13,46 @@ export const useMutateAuth = () => {
     setPassword('')
   }
 
+  // ログイン
   const loginMutation = useMutation(
     async () => {
-      const { error } = await supabase.auth.signIn({ email, password })
-      if (error) throw new Error(error.message)
+      await signInWithEmailAndPassword(auth, email, password)
     },
     {
+      onSuccess: () => {
+        reset()
+      },
       onError: (error: any) => {
-        alert(error.message)
+        const msg = errorMsgHandler(error)
+        alert(msg)
         reset()
       },
     }
   )
 
+  // 会員登録
   const registerMutation = useMutation(
     async () => {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) throw new Error(error.message)
+      await createUserWithEmailAndPassword(auth, email, password)
     },
     {
+      onSuccess: () => {
+        reset()
+      },
       onError: (error: any) => {
-        alert(error.message)
+        const msg = errorMsgHandler(error)
+        alert(msg)
         reset()
       },
     }
   )
+
   return {
     email,
     setEmail,
     password,
     setPassword,
     loginMutation,
-    registerMutation,
+    registerMutation
   }
 }

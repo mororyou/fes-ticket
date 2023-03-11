@@ -22,6 +22,7 @@
     "@supabase/supabase-js": "1.33.3",
     "@tabler/icons": "^1.119.0",
     "dayjs": "^1.11.7",
+    "firebase": "^9.17.2",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

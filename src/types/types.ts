@@ -13,6 +13,16 @@ export type User = {
   created_at: string
 }
 
+export type StateUser = {
+  uid: string
+  name: string
+  email: string
+  image: string
+  boothId: string | null
+  booth: string | null
+  role: string
+}
+
 export type Questionnaire = {
   id: number
   booth_id: string | undefined
@@ -27,3 +37,4 @@ export type editedQuestionnaire = {
   contents: object | null
   delete_flg: boolean
 }
+

@@ -1,19 +1,8 @@
-import { supabase } from '@/libs/supabase'
-import useStore from '@/store'
+import { logout } from '@/libs/firebase/auth'
 import { Burger, Button, Header, MediaQuery } from '@mantine/core'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 const HeaderComponent = (opened: boolean, setOpened: any, theme: any) => {
-
-  const router = useRouter()
-  const setSessionUser = useStore((state) => state.setSessionUser)
-  const logout = () => {
-    setSessionUser(null)
-    supabase.auth.signOut()
-    router.push('/')
-  }
-  
   return (
     <Header height={{ base: 50, md: 70 }} p="md">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>

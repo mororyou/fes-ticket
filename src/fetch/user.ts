@@ -1,13 +1,22 @@
 import { supabase } from "@/libs/supabase"
 
-export const getUser = async (userId: string) => {
+export const getUserInfo = async (userId: string) => {
   const { data, error } = await supabase
     .from('users')
-    .select('*')
+    .select(`
+      role,
+      booths (
+        id,
+        name
+      )
+    `)
     .eq('user_id', userId)
     .single()
   
-  if (error) throw Error(error.message)
-  
-  return data
+  if (!error) {
+    return data
+  } else {
+    return null
+  }
+
 }

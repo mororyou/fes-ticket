@@ -1,41 +1,43 @@
 import { NavItems } from '@/components/client/NavItems'
 import HeaderComponent from '@/components/common/Header'
 import NaviComponent from '@/components/common/Nav'
-import useStore from '@/store'
+import { useAuthContext } from '@/context/AuthContext'
 import { AppShell, useMantineTheme } from '@mantine/core'
 import Head from 'next/head'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
 type Props = {
   title: string
-  active: string | null
+  error: boolean
   children: React.ReactNode
 }
 
-const ClientLayout: FC<Props> = ({ title, active, children }) => {
+const ClientLayout: FC<Props> = ({ title, error = false, children }) => {
   const theme = useMantineTheme()
   const [opened, setOpened] = useState(false)
-  const session = useStore((state) => state.session)
-  const sessionUser = useStore((state) => state.sessionUser)
-
-  useEffect(() => {
-    if (session) {
-      if (sessionUser?.role !== "client") {
-        Router.push('/client/dashboard')
-      }
-    } else {
-      Router.push('/')
-    }
-  }, [sessionUser])
+  const {currentUser} = useAuthContext()
+  const router = useRouter()
   
+  useEffect(() => {
+    if (currentUser !== undefined) {
+      if (currentUser.booth === "") {
+        router.push('/error/nonbooth')
+      } else {
+        if (currentUser.role !== "client") {
+          router.push('/admin/dashboard')
+        }
+      }
+    }
+  }, [])
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
+
       <AppShell
-        navbar={NaviComponent(opened, NavItems, 'client')}
+        navbar={!error ? NaviComponent(opened, NavItems, 'client') : <></>}
         header={HeaderComponent(opened, setOpened, theme)}
         styles={{
           main: {
