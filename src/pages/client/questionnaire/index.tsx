@@ -13,10 +13,10 @@ const Questionnaire = () => {
   const {createQuestionnaire, updateQuestionnaire} = useQuestionnaireMutate()
 
   useEffect(() => {
-    
   }, [])
+  
   return (
-    <ClientLayout title="申し込みフォーム設定" active={"questionnaire"}>
+    <ClientLayout title="申し込みフォーム設定" error={false}>
       <Title
         title="申し込みフォーム設定"
         btn={null}
