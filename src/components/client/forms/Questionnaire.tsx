@@ -1,5 +1,5 @@
 import { FORM_REQUIRE_ITEMS, FORM_TYPES } from "@/constant/const"
-import { Questionnaire } from "@/types/types"
+import { Questionnaire, RecordProps } from "@/types/types"
 import {
   Button,
   Divider,
@@ -8,13 +8,6 @@ import {
 } from '@mantine/core'
 import { IconCircleX, IconPlus } from '@tabler/icons'
 import { FC, memo, useEffect, useState } from "react"
-
-type RecordProps = {
-  index: number
-  label: string
-  content: any
-  type: string
-}
 
 type Props = {
   questionnaire: Questionnaire | null
@@ -70,7 +63,10 @@ const QuestionnaireFormMemo:FC<Props> = ({
   }
 
   useEffect(() => {
-    if (questionnaire !== null && questionnaire?.contents !== null) {
+    if (
+      questionnaire !== null &&
+      questionnaire?.contents !== null
+    ) {
       setRecords(questionnaire.contents)
     }
   }, [questionnaire])

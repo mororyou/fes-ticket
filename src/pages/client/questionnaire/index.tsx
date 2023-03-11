@@ -5,11 +5,13 @@ import { getQuestionnaire } from "@/fetch/questionnaire"
 import { useQuestionnaireMutate } from "@/hooks/questionnaire/useMutate"
 import ClientLayout from "@/layout/client"
 import { Questionnaire } from "@/types/types"
-import { Paper } from '@mantine/core'
+import { Button, Paper } from '@mantine/core'
 import { IconSignature } from '@tabler/icons'
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
 const Questionnaire = () => {
+  const router = useRouter()
   const {createQuestionnaire, updateQuestionnaire} = useQuestionnaireMutate()
   const {currentUser} = useAuthContext()
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null)
@@ -28,7 +30,9 @@ const Questionnaire = () => {
     <ClientLayout title="申し込みフォーム設定" error={false}>
       <Title
         title="申し込みフォーム設定"
-        btn={null}
+        btn={<Button size="xs" color="teal" onClick={() => {
+          router.push('/client/questionnaire/preview')
+        }}>Preview</Button>}
         icon={<IconSignature size={24} className="mr-2 text-gray-700" />}
       />
 
