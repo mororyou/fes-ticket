@@ -1,6 +1,5 @@
 import { FORM_REQUIRE_ITEMS, FORM_TYPES } from "@/constant/const"
-import useStore from "@/store"
-import { editedQuestionnaire } from "@/types/types"
+import { Questionnaire, RecordProps } from "@/types/types"
 import {
   Button,
   Divider,
@@ -8,30 +7,22 @@ import {
   TextInput
 } from '@mantine/core'
 import { IconCircleX, IconPlus } from '@tabler/icons'
-import { FC, memo, useState } from "react"
-
-type RecordProps = {
-  index: number
-  label: string
-  content: any
-  type: string
-}
+import { FC, memo, useEffect, useState } from "react"
 
 type Props = {
-  edited: editedQuestionnaire
-  update: (payload: editedQuestionnaire) => void
+  questionnaire: Questionnaire | null
   createMutation: any
   updateMutation: any
+  boothId: string
 }
 
 const QuestionnaireFormMemo:FC<Props> = ({
-  edited,
-  update,
+  questionnaire,
   createMutation,
   updateMutation,
+  boothId
 }) => {
-  const user = useStore((state) => state.sessionUser)
-  const [records, setRecords] = useState<RecordProps[]>([])
+  const [records, setRecords] = useState<any>([])
   
   // レコード追加
   const pushRecord = () => {
@@ -52,28 +43,38 @@ const QuestionnaireFormMemo:FC<Props> = ({
 
   const submitHandler = () => {
     if(records.length > 0) {
-      if (edited.id === 0) {
+      if (questionnaire === null) {
         // 新規登録
         createMutation.mutate({
-          booth_id: user?.booth_id,
+          booth_id: boothId,
           contents: records,
           delete_flg: false,
         })
       } else {
         // 更新
         updateMutation.mutate({
-          id: edited.id,
+          id: questionnaire.id,
+          booth_id: boothId,
           contents: records,
-          delete_flg: false
+          delete_flg: false,
         })
       }
     }
   }
 
+  useEffect(() => {
+    if (
+      questionnaire !== null &&
+      questionnaire?.contents !== null
+    ) {
+      setRecords(questionnaire.contents)
+    }
+  }, [questionnaire])
+
   return (
     <>
       <GridHead />
-      {records && records.map((record, idx) => (
+      {records && records.map((record: any, idx: number) => (
         <GridRow 
           key={idx}
           index={record.index}
@@ -141,6 +142,7 @@ type GridRowProps = {
 // Grid Row
 const GridRow: FC<GridRowProps> = ({
   index,
+  label,
   content,
   type,
   destroyAction,
@@ -177,9 +179,8 @@ const GridRow: FC<GridRowProps> = ({
       )
     )
   }
-
   // 選択肢変更
-  const selectChengeHandler = (idx: number, values: object) => {
+  const selectChengeHandler = (idx: number, values: string) => {
     const contents = records[idx].content
     contents.push(values)
     setRecords(
@@ -206,6 +207,7 @@ const GridRow: FC<GridRowProps> = ({
             placeholder="ラベル"
             size="sm"
             radius="sm"
+            value={label}
             onChange={(e) => {
               e.preventDefault()
               labelChangeHandler(index, e.target.value)
@@ -218,6 +220,7 @@ const GridRow: FC<GridRowProps> = ({
             data={FORM_TYPES}
             size="sm"
             radius={'sm'}
+            value={type}
             onChange={(value: string) => {
               typeChengeHandler(index, value)
             }}
@@ -227,14 +230,15 @@ const GridRow: FC<GridRowProps> = ({
           {FORM_REQUIRE_ITEMS.includes(type) ? (
             <MultiSelect
               placeholder=""
-              data={content}
               creatable
               searchable
+              defaultValue={content}
+              data={content}
               getCreateLabel={(query) => `リスト作成 ${query}`}
               onCreate={(query) => {
-                const items = { value: query, label: query }
-                selectChengeHandler(index, items)
-                return items
+                // const items = { value: query, label: query }
+                selectChengeHandler(index, query)
+                return query
               }}
             />
           ) : (

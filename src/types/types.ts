@@ -38,3 +38,9 @@ export type editedQuestionnaire = {
   delete_flg: boolean
 }
 
+export type RecordProps = {
+  index: number
+  label: string
+  content: any
+  type: string
+}
