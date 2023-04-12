@@ -3,12 +3,21 @@ import { FC } from "react";
 
 type Props = {
   label: string
-  // onChange: () => void
+  name: string | number
+  type: string
+  value?: string | number | undefined
+  changeHandler: any
 }
 
-const TextInputField:FC<Props> = ({label}) => {
+const TextInputField: FC<Props> = ({ label, name, type, value, changeHandler }) => {
   return (
-    <TextInput label={label}  />
+    <TextInput
+      label={label}
+      value={value}
+      onChange={(e) => {
+        changeHandler(name, label, type, e.target.value)
+      }}
+    />
   )
 }
 

@@ -236,7 +236,6 @@ const GridRow: FC<GridRowProps> = ({
               data={content}
               getCreateLabel={(query) => `リスト作成 ${query}`}
               onCreate={(query) => {
-                // const items = { value: query, label: query }
                 selectChengeHandler(index, query)
                 return query
               }}

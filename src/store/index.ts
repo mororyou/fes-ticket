@@ -1,5 +1,5 @@
-import { QuestionnaireState } from "@/state/initialState"
-import { editedQuestionnaire, User } from "@/types/types"
+import { ApplyState, QuestionnaireState } from "@/state/initialState"
+import { EditedApply, editedQuestionnaire, User } from "@/types/types"
 import { Session } from "@supabase/supabase-js"
 import { create } from "zustand"
 type State = {
@@ -11,6 +11,10 @@ type State = {
   editedQuestionnaire: editedQuestionnaire
   updatedEditedQuestionnaire: (payload: editedQuestionnaire) => void
   resetEditedQuestionnaire: () => void
+  // Apply
+  editedApply: EditedApply
+  updatedEditedApply: (payload: EditedApply) => void
+  resetEditedApply: () => void
 }
 
 const useStore = create<State>((set) => ({
@@ -32,7 +36,29 @@ const useStore = create<State>((set) => ({
   resetEditedQuestionnaire: () => 
     set({
       editedQuestionnaire: QuestionnaireState
+    }),
+  
+  // Apply
+  editedApply: ApplyState,
+  updatedEditedApply: (payload) => 
+    set({
+      editedApply: {
+        id: payload.id,
+        uuid: payload.uuid,
+        booth: payload.booth,
+        date: payload.date,
+        time: payload.time,
+        name: payload.name,
+        url: payload.url,
+        contents: payload.contents,
+        status: payload.status
+      },
+    }),
+  resetEditedApply: () => {
+    set({
+      editedApply: ApplyState
     })
+  }
 }))
 
 export default useStore
