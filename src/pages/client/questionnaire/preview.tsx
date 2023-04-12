@@ -1,10 +1,10 @@
-import CheckBox from "@/components/common/form/CheckBox"
-import Date from "@/components/common/form/Date"
-import Multi from "@/components/common/form/Multi"
-import Radio from "@/components/common/form/Radio"
-import Select from "@/components/common/form/Select"
-import TextArea from "@/components/common/form/TextArea"
-import TextInput from "@/components/common/form/TextInput"
+import CheckBoxComponent from "@/components/common/form/CheckBox"
+import DateComponent from "@/components/common/form/Date"
+import MultiComponent from "@/components/common/form/Multi"
+import RadioComponent from "@/components/common/form/Radio"
+import SelectComponent from "@/components/common/form/Select"
+import TextAreaComponent from "@/components/common/form/TextArea"
+import TextInputComponent from "@/components/common/form/TextInput"
 import { useAuthContext } from "@/context/AuthContext"
 import { getQuestionnaire } from "@/fetch/questionnaire"
 import ClientLayout from "@/layout/client"
@@ -39,31 +39,31 @@ const QuestionnairePreview = () => {
                 {(() => {
                   if (apply.type === "text") {
                     return (
-                      <TextInput label={apply.label} />
+                      <TextInputComponent changeHandler={null} label={apply.label} name={index} type={apply.type} />
                     )
                   } else if (apply.type === "textarea") {
                     return (
-                      <TextArea label={apply.label} />
+                      <TextAreaComponent changeHandler={null} label={apply.label} name={index} type={apply.type}/>
                     )
                   } else if (apply.type === "checkbox") {
                     return (
-                      <CheckBox label={apply.label} content={apply.content} />
+                      <CheckBoxComponent changeHandler={null} label={apply.label} content={apply.content} name={index} type={apply.type}/>
                     )
                   } else if (apply.type === "radio") {
                     return (
-                      <Radio label={apply.label} content={apply.content} />
+                      <RadioComponent changeHandler={null} label={apply.label} content={apply.content} name={index} type={apply.type}/>
                     )
                   } else if (apply.type === "select") {
                     return (
-                      <Select label={apply.label} content={apply.content} />
+                      <SelectComponent changeHandler={null} label={apply.label} content={apply.content} name={index} type={apply.type}/>
                     )
                   } else if (apply.type === "multi") {
                     return (
-                      <Multi label={apply.label} content={apply.content} />
+                      <MultiComponent changeHandler={null} label={apply.label} content={apply.content} name={index} type={apply.type}/>
                     )
                   } else if (apply.type === "date") {
                     return (
-                      <Date label={apply.label} />
+                      <DateComponent changeHandler={null} label={apply.label} name={index} type={apply.type}/>
                     )
                   }
                 })()}
