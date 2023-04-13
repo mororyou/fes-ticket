@@ -18,21 +18,29 @@ const Questionnaire = () => {
   
   useEffect(() => {
     const f = async () => {
-      if(currentUser !== undefined && currentUser?.boothId !== null) {
+      if (currentUser !== undefined && currentUser?.boothId !== null) {
         const res = await getQuestionnaire(currentUser?.boothId)
         setQuestionnaire(res)
       }
     }
     f()
-  }, [])
+  }, [currentUser])
   
   return (
     <ClientLayout title="申し込みフォーム設定" error={false}>
       <Title
         title="申し込みフォーム設定"
-        btn={<Button size="xs" color="teal" onClick={() => {
-          router.push('/client/questionnaire/preview')
-        }}>Preview</Button>}
+        btn={
+          <Button
+            size="xs"
+            color="teal"
+            onClick={() => {
+              router.push('/client/questionnaire/preview')
+            }}
+          >
+            プレビュー
+          </Button>
+        }
         icon={<IconSignature size={24} className="mr-2 text-gray-700" />}
       />
 
