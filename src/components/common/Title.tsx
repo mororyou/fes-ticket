@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react'
 type Props = {
   icon: ReactNode
   title: string
-  btn: ReactNode | null
+  btn?: ReactNode | null
 }
 
 const Title: FC<Props> = ({ icon, title, btn = null }) => (

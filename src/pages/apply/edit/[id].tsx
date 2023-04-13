@@ -60,7 +60,7 @@ const ApplyEdit: FC<Props> = ({ id, apply, booth, questionnaire }) => {
     setDate(apply.date)
     setTime(apply.time)
     setContents(apply.contents)
-  }, [])
+  }, [apply])
 
   const changeEventHandler = (
     key: number,

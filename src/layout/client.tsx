@@ -9,7 +9,7 @@ import { FC, useEffect, useState } from 'react'
 
 type Props = {
   title: string
-  error: boolean
+  error?: boolean
   children: React.ReactNode
 }
 
