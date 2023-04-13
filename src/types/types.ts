@@ -43,4 +43,40 @@ export type RecordProps = {
   label: string
   content: any
   type: string
+  value: any
+}
+
+export type Apply = {
+  id: number
+  uuid: string
+  booth: string
+  date: string
+  seq: number
+  time: string
+  name: string
+  url: string
+  contents: object | null | []
+  status: number
+  created_at: string
+  updated_at: string
+}
+
+export type EditedApply = {
+  id: number
+  date: string
+  time: string
+  name: string
+  url: string
+  contents: object | null | []
+  status: number
+}
+
+export type Booth = {
+  id: string
+  name: string
+  location: string
+  questionary: boolean
+  status: number
+  created_at: string
+  updated_at: string
 }

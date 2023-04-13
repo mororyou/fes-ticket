@@ -6,3 +6,18 @@ export const QuestionnaireState = {
   created_at: '',
   updated_At: '',
 }
+
+export const ApplyState = {
+  id: 0,
+  uuid: "",
+  booth: "",
+  date: "",
+  seq: 0,
+  time: "",
+  name: "",
+  url: "",
+  contents: null,
+  status: 0,
+  created_at: '',
+  updated_At: '',
+}
