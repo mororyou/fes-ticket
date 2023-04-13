@@ -12,7 +12,14 @@ export const FORM_TYPES = [
   { label: 'ラジオボタン', value: 'radio' },
   { label: 'セレクトボックス', value: 'select' },
   { label: 'セレクトボックス（複数選択）', value: 'multi' },
-  { label: '日付', value: 'date' },
+  // { label: '日付', value: 'date' },
+]
+
+// フェス日
+export const DATES = [
+  { label: '7月15日', value: '2023-07-15' },
+  { label: '7月16日', value: '2023-07-16' },
+  { label: '7月17日', value: '2023-07-17' },
 ]
 
 // 項目が必須な種別

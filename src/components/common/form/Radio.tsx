@@ -5,7 +5,7 @@ type Props = {
   name: string | number
   type: string
   content: []
-  changeHandler: any
+  changeHandler?: any
   value?: string
 }
 const RadioField: FC<Props> = ({ label, name, type, content, value, changeHandler }) => {

@@ -7,7 +7,7 @@ type Props = {
   name: string | number
   type: string
   value?: Date | null | undefined
-  changeHandler: any
+  changeHandler?: any
 }
 
 const DateField: FC<Props> = ({ label, name, type, value, changeHandler }) => {

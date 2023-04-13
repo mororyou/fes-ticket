@@ -6,13 +6,19 @@ import SelectComponent from "@/components/common/form/Select"
 import TextAreaComponent from "@/components/common/form/TextArea"
 import TextInputComponent from "@/components/common/form/TextInput"
 import Title from '@/components/common/Title'
+import { DATES } from '@/constant/const'
 import { getNextSeq } from "@/fetch/apply"
 import { getBooth } from '@/fetch/booth'
 import { getQuestionnaire } from '@/fetch/questionnaire'
 import { useApplyMutate } from "@/hooks/apply/useMutate"
 import { Booth, RecordProps } from '@/types/types'
-import { Button, Divider, Paper, TextInput as TextField } from '@mantine/core'
-import { DatePicker, TimeInput } from "@mantine/dates"
+import {
+  Button,
+  Divider,
+  Paper,
+  SegmentedControl,
+  TextInput as TextField,
+} from '@mantine/core'
 import { IconSignature } from '@tabler/icons'
 import { GetServerSideProps } from 'next'
 import { FC, useEffect, useState } from 'react'
@@ -40,7 +46,6 @@ type Props = {
 }
 
 const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
-  
   const [name, setName] = useState<string>('')
   const [url, setUrl] = useState<string>('')
   const [date, setDate] = useState<string>('')
@@ -48,7 +53,7 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const [contents, setContents] = useState<any>([])
 
   const { createApply } = useApplyMutate()
-  
+
   const changeEventHandler = (
     key: number,
     label: string,
@@ -57,15 +62,16 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
     content?: object | [] | null
   ) => {
     setContents(
-      contents.map((record: any) => 
+      contents.map((record: any) =>
         key === record.index
           ? {
-            index: key,
-            label: label,
-            value: value,
-            content: record.content,
-            type: type,
-          } : record
+              index: key,
+              label: label,
+              value: value,
+              content: record.content,
+              type: type,
+            }
+          : record
       )
     )
   }
@@ -79,7 +85,7 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       name: name,
       url: url,
       contents: contents,
-      status: 1
+      status: 1,
     })
   }
 
@@ -87,11 +93,17 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
     const records = []
     for (let i = 0; i < questionnaire.length; i++) {
       const el = questionnaire[i]
-      const record = { index: i, label: '', value: null, type: '', content: el['content'] }
+      const record = {
+        index: i,
+        label: '',
+        value: null,
+        type: '',
+        content: el['content'],
+      }
       records.push(record)
     }
     setContents(records)
-  }, [])
+  }, [questionnaire])
 
   return (
     <Paper shadow={'sm'} p="md" m={'md'}>
@@ -119,20 +131,14 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           />
         </div>
         <div className="col-span-12">
-          <DatePicker
-            label="予約日"
-            locale="ja"
-            inputFormat="YYYY/MM/DD"
-            onChange={(e) => {
-              setDate(e?.toLocaleDateString() as string)
-            }}
-          />
+          <SegmentedControl data={DATES} onChange={setDate} value={date} />
         </div>
         <div className="col-span-12">
-          <TimeInput
+          <TextField
             label="予約時間帯"
+            value={time}
             onChange={(e) => {
-              setTime(e.toLocaleTimeString())
+              setTime(e.target.value)
             }}
           />
         </div>
@@ -217,12 +223,14 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
             )
           })}
       </div>
-      <div className="flex justify-center md:justify-start my-12">
-        <Button radius={"xs"}
+      <div className="my-12 flex justify-center md:justify-start">
+        <Button
+          radius={'xs'}
           onClick={(e) => {
             e.preventDefault()
             submitHandler()
-          }}>
+          }}
+        >
           送信
         </Button>
       </div>

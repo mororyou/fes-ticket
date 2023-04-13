@@ -6,7 +6,7 @@ type Props = {
   label: string
   name: string | number
   type: string
-  changeHandler: any
+  changeHandler?: any
   content: []
   value?: []
 }

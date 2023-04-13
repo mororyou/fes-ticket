@@ -6,7 +6,7 @@ type Props = {
   name: string | number
   type: string
   value?: string | number | undefined
-  changeHandler: any
+  changeHandler?: any
 }
 
 const TextInputField: FC<Props> = ({ label, name, type, value, changeHandler }) => {
