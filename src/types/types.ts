@@ -80,3 +80,23 @@ export type Booth = {
   created_at: string
   updated_at: string
 }
+
+export type Client = {
+  id: number
+  booth_id: string
+  name: string
+  url: string
+  skill: string
+  date: string
+  memo: string
+  created_at: string
+}
+
+export type EditedClient = {
+  id: number
+  name: string
+  url: string
+  skill: string
+  date: string
+  memo: string
+}
