@@ -21,3 +21,14 @@ export const ApplyState = {
   created_at: '',
   updated_At: '',
 }
+
+export const ClientState = {
+  id: 0,
+  booth_id: '',
+  name: '',
+  url: '',
+  skill: '',
+  date: '',
+  memo: '',
+  created_at: '',
+}
