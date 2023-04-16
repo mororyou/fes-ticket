@@ -1,38 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Libecity Fes Ticket Application
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
+```
 yarn dev
-# or
-pnpm dev
+
+yarn build
+yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 環境変数(変数の値は共有のスプレッドシートに記載)
+#### .env.local
+```env:.env.local
+# SUPABASE
+NEXT_PUBLIC_SUPABASE_URL=****
+NEXT_PUBLIC_SUPABASE_KEY=****
+NEXT_PUBLIC_SUPABASE_PWD=****
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=****
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=****
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=****
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=****
+NEXT_PUBLIC_FIREBASE_MESSEGING_SENDER_ID=****
+NEXT_PUBLIC_FIREBASE_APP_ID=****
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Javascript FrameWork
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+  React / Next.js
 
-## Learn More
+## CSS FrameWork
 
-To learn more about Next.js, take a look at the following resources:
+  Tailwind CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Libraly
 
-## Deploy on Vercel
+### supabase
+  https://supabase.com/
+  
+### mantine
+  https://mantine.dev/
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### firebase
+  https://firebase.google.com/docs?hl=ja
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### dayjs
+  https://date-fns.org/
+
+### react-query
+  https://react-query-v3.tanstack.com/
+
+### zustand
+  https://github.com/pmndrs/zustand
+
+---
+
+
