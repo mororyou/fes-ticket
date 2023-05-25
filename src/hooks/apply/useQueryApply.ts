@@ -1,6 +1,6 @@
-import { supabase } from "@/libs/supabase"
-import { Apply } from "@/types/types"
-import { useQuery } from "react-query"
+import { supabase } from '@/libs/supabase'
+import { Apply } from '@/types/types'
+import { useQuery } from 'react-query'
 
 export default function useQueryApply(ApplyId: number) {
   const getApply = async () => {
@@ -9,7 +9,7 @@ export default function useQueryApply(ApplyId: number) {
       .select('*')
       .eq('id', ApplyId)
       .single()
-    
+
     if (error) throw Error(error.message)
 
     return data
@@ -18,6 +18,6 @@ export default function useQueryApply(ApplyId: number) {
   return useQuery<Apply, Error>({
     queryKey: ['apply'],
     queryFn: getApply,
-    staleTime: Infinity
+    staleTime: Infinity,
   })
 }

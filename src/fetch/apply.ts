@@ -19,10 +19,12 @@ export const getNextSeq = async (boothId: string) => {
     .eq('booth', boothId)
     .order('seq', { ascending: false })
     .single()
+  
+  if (error) throw new Error(error.message)
+
   if (data === null) {
     return 1
   } else {
-    if (error) throw new Error(error.message)
     return data.seq + 1
   }
 }
