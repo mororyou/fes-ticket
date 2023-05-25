@@ -5,12 +5,15 @@ import { getApplies } from '@/fetch/apply'
 import ClientLayout from '@/layout/client'
 import { Apply } from '@/types/types'
 import { Button, Divider, Paper, SegmentedControl } from '@mantine/core'
+import { IconListNumbers } from '@tabler/icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
 
 const Receptions = () => {
   const [date, setDate] = useState('2023-07-15')
+  const [opened, setOpened] = useState(false)
+
   const [receptions, setReceptions] = useState<Apply[]>([])
   const { currentUser } = useAuthContext()
 
@@ -26,18 +29,7 @@ const Receptions = () => {
 
   return (
     <ClientLayout title="受付一覧">
-      <Title
-        title="受付一覧"
-        icon={
-          <Image
-            src="/images/icon/loincloth-stone.png"
-            width={28}
-            height={28}
-            className="mr-2"
-            alt="spats-stone"
-          />
-        }
-      />
+      <Title title="受付一覧" icon={<IconListNumbers className="mr-2" />} />
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
           <Paper shadow="xs" p="md">

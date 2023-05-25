@@ -8,6 +8,7 @@ import { useSubscribeClients } from '@/hooks/client/useSubscribeClients'
 import ClientLayout from '@/layout/client'
 import useStore from '@/store'
 import { Button, Paper } from '@mantine/core'
+import { IconUser } from '@tabler/icons'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -25,15 +26,7 @@ const Users = () => {
     <ClientLayout title="ユーザー一覧">
       <Title
         title="ユーザー一覧"
-        icon={
-          <Image
-            src="/images/icon/loincloth-stone.png"
-            width={28}
-            height={28}
-            className="mr-2"
-            alt="spats-stone"
-          />
-        }
+        icon={<IconUser className="mr-2" />}
         btn={
           <Button size="xs" color="teal" onClick={() => setOpened(true)}>
             追加
