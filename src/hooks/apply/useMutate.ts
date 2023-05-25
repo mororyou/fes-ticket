@@ -12,50 +12,46 @@ export const useApplyMutate = () => {
 
   // Insert
   const createApply = useMutation(
-    async(
-      apply: Omit<Apply, "id" | "uuid" | "updated_at" | "created_at">
-    ) => {
-      const { data, error } = 
-        await supabase.from('applies').insert(apply)
-      
+    async (apply: Omit<Apply, 'id' | 'uuid' | 'updated_at' | 'created_at'>) => {
+      const { data, error } = await supabase.from('applies').insert(apply)
+
       if (error) throw new Error(error.message)
 
       return data
     },
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         router.push(`/apply/complete/${data[0].uuid}`)
         reset()
       },
       onError: (err: any) => {
         alert(err.message)
         reset()
-      }
+      },
     }
   )
 
   // Update
   const updatedApply = useMutation(
-    async(
-      apply: EditedApply
-    ) => {
-      const { data, error } = await supabase.from('applies')
+    async (apply: EditedApply) => {
+      const { data, error } = await supabase
+        .from('applies')
         .update(apply)
         .eq('id', apply.id)
-      
+
       if (error) throw new Error(error.message)
 
       return data
     },
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         router.push(`/apply/complete/${data[0].uuid}`)
         // reset()
       },
       onError: (err: any) => {
         alert(err.message)
         reset()
-      }
+      },
     }
   )
 

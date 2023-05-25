@@ -27,13 +27,13 @@ export const AuthProvider:FC<Props> = ({children}) => {
         const userInfo = await getUserInfo(user.uid)
         if (userInfo !== null) {
           user.role = userInfo.role
-          user.booth = userInfo.booths.name
-          user.boothId = userInfo.booths.id
+          user.booth = userInfo.name
+          user.boothId = userInfo.id
         }
-        setCurrentUser(user)
-        setSignInCheck(true)
+        await setCurrentUser(user)
+        await setSignInCheck(true)
       } else {
-        setSignInCheck(false)
+        await setSignInCheck(false)
       }
     })
   }, [])
