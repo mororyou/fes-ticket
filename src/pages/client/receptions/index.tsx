@@ -6,7 +6,6 @@ import ClientLayout from '@/layout/client'
 import { Apply } from '@/types/types'
 import { Button, Divider, Paper, SegmentedControl } from '@mantine/core'
 import { IconListNumbers } from '@tabler/icons'
-import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
 
