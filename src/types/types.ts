@@ -100,3 +100,15 @@ export type EditedClient = {
   date: string
   memo: string
 }
+
+export type Event = {
+  id: number
+  title: string
+  user: string
+  start: string
+  end: string
+  resourceId: number | null
+  url: string
+  contents: Object | null
+  date: string
+}
