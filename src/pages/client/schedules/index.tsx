@@ -6,7 +6,7 @@ import { Apply, Event } from '@/types/types'
 import { useAuthContext } from '@/context/AuthContext'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Paper } from '@mantine/core'
-import { IconCalendarEvent } from '@tabler/icons'
+import { IconCalendarEvent, IconExternalLink } from '@tabler/icons'
 import dayjs from 'dayjs'
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -38,57 +38,50 @@ const Schedules = () => {
         await setApplies(res_apply)
       }
     }
-
     f()
   }, [date, currentUser])
 
-  // const moveEvent = useCallback(
-  //   ({
-  //     event,
-  //     start,
-  //     end,
-  //     resourceId,
-  //     isAllDay: droppedOnAllDaySlot = false,
-  //   }: {
-  //     event: any
-  //     start: any
-  //     end: any
-  //     resourceId: number
-  //     isAllDay: any
-  //   }) => {
-  //     const { allDay } = event
-  //     if (!allDay && droppedOnAllDaySlot) {
-  //       event.allDay = true
-  //     }
-  //     setSchedules((prev) => {
-  //       const existing = prev.find((ev: Event) => ev.id === event.id) ?? {}
-  //       const filtered = prev.filter((ev: Event) => ev.id !== event.id)
-  //       return [...filtered, { ...existing, start, end, resourceId, allDay }]
-  //     })
-  //   },
-  //   [setSchedules]
-  // )
-
-  // const resizeEvent = useCallback(
-  //   ({ event, start, end }: { event: any; start: any; end: any }) => {
-  //     setSchedules((prev) => {
-  //       const existing = prev.find((ev) => ev.id === event.id) ?? {}
-  //       const filtered = prev.filter((ev) => ev.id !== event.id)
-  //       return [...filtered, { ...existing, start, end }]
-  //     })
-  //   },
-  //   [setSchedules]
-  // )
-
+  // react-big-calendar custom useCallback function
+  const startAccessor = useCallback((event: any) => new Date(event.start), [])
+  const endAccessor = useCallback((event: any) => new Date(event.end), [])
+  const resourceIdAccessor = useCallback((event: any) => event.resourceId, [])
+  const resourceTitleAccessor = useCallback((obj: any) => obj.resourceTitle, [])
   const onNavigate = useCallback((newDate: Date) => setDate(newDate), [setDate])
+  const onResizeEvent = useCallback(
+    ({ event, start, end }: { event: any; start: any; end: any }) => {
+      setSchedules((prev: Event[]): Event | any => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end }]
+      })
+      // DB更新関数
+    },
+    [setSchedules]
+  )
+  const onEventDrop = useCallback(
+    ({ event, start, end }: { event: any; start: any; end: any }) => {
+      setSchedules((prev: Event[]): Event | any => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end }]
+      })
+      // DB更新関数
+    },
+    [setSchedules]
+  )
 
-  const { defaultDate, messages } = useMemo(
+  // react-big-calendar custom useMemo
+  const { defaultDate, formats, messages } = useMemo(
     () => ({
       defaultDate: date,
       messages: {
         next: '翌日',
         today: '当日',
         previous: '前日',
+      },
+      formats: {
+        dayHeaderFormat: (date: any, culture: any, localizer: any) =>
+          localizer.format(date, 'M月D日', culture),
       },
     }),
     [date]
@@ -103,60 +96,69 @@ const Schedules = () => {
 
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
-          {/* <Paper shadow="xs" p="md"> */}
-          <div className="grid grid-cols-12 gap-x-4">
-            <Paper p="md" shadow="xs" className="col-span-8">
+          <div className="grid grid-cols-1 gap-y-4">
+            <Paper p="md" shadow="xs" className="row-span-1 max-h-[50vh]">
               <DnDCalendar
-                defaultDate={defaultDate}
+                resizable
+                selectable
                 defaultView={Views.DAY}
                 views={['day']}
+                formats={formats}
+                messages={messages}
+                defaultDate={defaultDate}
                 events={schedules}
                 localizer={localizer}
-                resizable
                 resources={resourceMap}
-                messages={messages}
-                selectable
                 showMultiDayTimes={true}
-                step={30}
-                // onEventDrop={moveEvent}
-                // onEventResize={resizeEvent}
+                step={15}
+                min={new Date(2023, 7, 15, 9, 30)}
+                max={new Date(2023, 7, 17, 21)}
+                startAccessor={startAccessor}
+                endAccessor={endAccessor}
+                resourceIdAccessor={resourceIdAccessor}
+                resourceTitleAccessor={resourceTitleAccessor}
+                onEventDrop={onEventDrop}
+                onEventResize={onResizeEvent}
                 onNavigate={onNavigate}
-                startAccessor={(event: any) => {
-                  return new Date(event.start)
-                }}
-                endAccessor={(event: any) => {
-                  return new Date(event.end)
-                }}
-                resourceIdAccessor={(event: any) => {
-                  return event.resourceId
-                }}
-                resourceTitleAccessor={(obj: any) => {
-                  return obj.resourceTitle
-                }}
               />
             </Paper>
-            <div className="col-span-4">
+            <div className="row-span-1 max-h-[25vh] overflow-y-scroll">
               <h3 className="col-span-1 mb-8 border-b border-b-gray-400 p-2 text-base font-semibold text-gray-700">
                 申込者一覧
               </h3>
-              <div className="grid grid-cols-1 gap-y-4">
+              <div className="grid grid-cols-4 gap-4 px-2">
                 {applies &&
                   applies.map((apply: Apply) => {
                     return (
                       <Paper
                         key={apply.id}
-                        className="col-span-1 grid h-16 w-full grid-cols-12 p-4"
+                        className="col-span-1 grid h-16 w-full cursor-move grid-cols-12 grid-rows-2 gap-5 p-4"
                         p={'md'}
                         shadow="md"
                       >
-                        <h5>{apply.name}</h5>
+                        <p className="col-start-1 col-end-9 row-start-1 row-end-2 text-sm">
+                          {apply.name}
+                        </p>
+
+                        {apply.url && (
+                          <a
+                            href={apply.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="col-start-9 col-end-13 row-start-1 row-end-3 flex items-center justify-end"
+                          >
+                            <IconExternalLink size={32} />
+                          </a>
+                        )}
+                        <span className="col-start-1 col-end-9 row-start-2 row-end-3 text-xs">
+                          {apply.time}
+                        </span>
                       </Paper>
                     )
                   })}
               </div>
             </div>
           </div>
-          {/* </Paper> */}
         </div>
       </div>
     </ClientLayout>

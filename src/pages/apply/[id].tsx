@@ -124,7 +124,7 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
         </div>
         <div className="col-span-12">
           <TextField
-            label="プロフィールURL"
+            label="リベシティプロフィールURL"
             onChange={(e) => {
               setUrl(e.target.value)
             }}
