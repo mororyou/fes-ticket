@@ -1,14 +1,13 @@
+import ClientLayout from '@/layout/client'
 import Title from '@/components/common/Title'
-import { useAuthContext } from '@/context/AuthContext'
 import { getApplies } from '@/fetch/apply'
 import { getSchedules } from '@/fetch/schedule'
-import ClientLayout from '@/layout/client'
 import { Apply, Event } from '@/types/types'
+import { useAuthContext } from '@/context/AuthContext'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Paper } from '@mantine/core'
 import { IconCalendarEvent } from '@tabler/icons'
 import dayjs from 'dayjs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
@@ -34,15 +33,14 @@ const Schedules = () => {
       if (currentUser !== undefined && currentUser?.boothId !== null) {
         const datestring = dayjs(date).format('YYYY-MM-DD')
         const res_scd = await getSchedules(datestring)
+        await setSchedules(res_scd)
         const res_apply = await getApplies(currentUser?.boothId, datestring)
-        setSchedules(res_scd)
-        setApplies(res_apply)
-        console.log(res_scd)
+        await setApplies(res_apply)
       }
     }
 
     f()
-  }, [date])
+  }, [date, currentUser])
 
   // const moveEvent = useCallback(
   //   ({
@@ -93,7 +91,7 @@ const Schedules = () => {
         previous: '前日',
       },
     }),
-    []
+    [date]
   )
 
   return (
@@ -105,41 +103,60 @@ const Schedules = () => {
 
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
-          <Paper shadow="xs" p="md">
-            <div className="grid grid-cols-12 gap-x-4">
-              <div className="col-span-8">
-                <DnDCalendar
-                  defaultDate={defaultDate}
-                  defaultView={Views.DAY}
-                  views={['day']}
-                  events={schedules}
-                  localizer={localizer}
-                  resizable
-                  resources={resourceMap}
-                  messages={messages}
-                  selectable
-                  showMultiDayTimes={true}
-                  step={30}
-                  // onEventDrop={moveEvent}
-                  // onEventResize={resizeEvent}
-                  onNavigate={onNavigate}
-                  startAccessor={(event: any) => {
-                    return new Date(event.start)
-                  }}
-                  endAccessor={(event: any) => {
-                    return new Date(event.end)
-                  }}
-                  resourceIdAccessor={(event: any) => {
-                    return event.resourceId
-                  }}
-                  resourceTitleAccessor={(obj: any) => {
-                    return obj.resourceTitle
-                  }}
-                />
+          {/* <Paper shadow="xs" p="md"> */}
+          <div className="grid grid-cols-12 gap-x-4">
+            <Paper p="md" shadow="xs" className="col-span-8">
+              <DnDCalendar
+                defaultDate={defaultDate}
+                defaultView={Views.DAY}
+                views={['day']}
+                events={schedules}
+                localizer={localizer}
+                resizable
+                resources={resourceMap}
+                messages={messages}
+                selectable
+                showMultiDayTimes={true}
+                step={30}
+                // onEventDrop={moveEvent}
+                // onEventResize={resizeEvent}
+                onNavigate={onNavigate}
+                startAccessor={(event: any) => {
+                  return new Date(event.start)
+                }}
+                endAccessor={(event: any) => {
+                  return new Date(event.end)
+                }}
+                resourceIdAccessor={(event: any) => {
+                  return event.resourceId
+                }}
+                resourceTitleAccessor={(obj: any) => {
+                  return obj.resourceTitle
+                }}
+              />
+            </Paper>
+            <div className="col-span-4">
+              <h3 className="col-span-1 mb-8 border-b border-b-gray-400 p-2 text-base font-semibold text-gray-700">
+                申込者一覧
+              </h3>
+              <div className="grid grid-cols-1 gap-y-4">
+                {applies &&
+                  applies.map((apply: Apply) => {
+                    return (
+                      <Paper
+                        key={apply.id}
+                        className="col-span-1 grid h-16 w-full grid-cols-12 p-4"
+                        p={'md'}
+                        shadow="md"
+                      >
+                        <h5>{apply.name}</h5>
+                      </Paper>
+                    )
+                  })}
               </div>
-              <Paper className="col-span-4">Event List</Paper>
             </div>
-          </Paper>
+          </div>
+          {/* </Paper> */}
         </div>
       </div>
     </ClientLayout>
