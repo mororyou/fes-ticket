@@ -57,7 +57,7 @@ const useStore = create<State>((set) => ({
     set({
       editedApply: {
         id: payload.id,
-        date: payload.date,
+        dates: payload.dates,
         time: payload.time,
         name: payload.name,
         url: payload.url,

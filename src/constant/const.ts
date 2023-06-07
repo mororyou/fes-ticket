@@ -21,5 +21,14 @@ export const DATES = [
   { label: '7月17日(月)', value: '2023-07-17' },
 ]
 
+export const SELECTER_DAYS = [
+  { label: '7/15 AM', value: '2023-07-15-AM' },
+  { label: '7/15 PM', value: '2023-07-15-PM' },
+  { label: '7/16 AM', value: '2023-07-16-AM' },
+  { label: '7/16 PM', value: '2023-07-16-PM' },
+  { label: '7/17 AM', value: '2023-07-17-AM' },
+  { label: '7/17 PM', value: '2023-07-17-PM' },
+]
+
 // 項目が必須な種別
 export const FORM_REQUIRE_ITEMS = ['checkbox', 'radio', 'select', 'multi']

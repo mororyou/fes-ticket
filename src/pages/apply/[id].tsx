@@ -6,15 +6,16 @@ import SelectComponent from "@/components/common/form/Select"
 import TextAreaComponent from "@/components/common/form/TextArea"
 import TextInputComponent from "@/components/common/form/TextInput"
 import Title from '@/components/common/Title'
-import { DATES } from '@/constant/const'
-import { getNextSeq } from "@/fetch/apply"
+import { DATES, SELECTER_DAYS } from '@/constant/const'
+import { getNextSeq } from '@/fetch/apply'
 import { getBooth } from '@/fetch/booth'
 import { getQuestionnaire } from '@/fetch/questionnaire'
-import { useApplyMutate } from "@/hooks/apply/useMutate"
+import { useApplyMutate } from '@/hooks/apply/useMutate'
 import { Booth, RecordProps } from '@/types/types'
 import {
   Button,
   Divider,
+  MultiSelect,
   Paper,
   SegmentedControl,
   TextInput as TextField,
@@ -48,7 +49,7 @@ type Props = {
 const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const [name, setName] = useState<string>('')
   const [url, setUrl] = useState<string>('')
-  const [date, setDate] = useState<string>('')
+  const [dates, setDates] = useState<any>([])
   const [time, setTime] = useState<string>('')
   const [contents, setContents] = useState<any>([])
 
@@ -79,7 +80,7 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const submitHandler = async () => {
     await createApply.mutate({
       booth: booth.id as string,
-      date: date,
+      dates: dates,
       seq: seq,
       time: time,
       name: name,
@@ -131,15 +132,10 @@ const Apply: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           />
         </div>
         <div className="col-span-12">
-          <SegmentedControl data={DATES} onChange={setDate} value={date} />
-        </div>
-        <div className="col-span-12">
-          <TextField
-            label="予約時間帯"
-            value={time}
-            onChange={(e) => {
-              setTime(e.target.value)
-            }}
+          <MultiSelect
+            label="希望日時 時間帯"
+            data={SELECTER_DAYS}
+            onChange={setDates}
           />
         </div>
 
