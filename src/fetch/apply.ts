@@ -18,14 +18,14 @@ export const getNextSeq = async (boothId: string) => {
     .select('seq')
     .eq('booth', boothId)
     .order('seq', { ascending: false })
-    .single()
-  
+    .limit(1)
+
   if (error) throw new Error(error.message)
 
-  if (data === null) {
+  if (data?.length === 0) {
     return 1
   } else {
-    return data.seq + 1
+    return data[0].seq + 1
   }
 }
 
@@ -35,6 +35,17 @@ export const getApplies = async (boothId: string, date: string) => {
     .select('*')
     .eq('booth', boothId)
     .eq('date', date)
+
+  if (error) throw new Error(error.message)
+
+  return data
+}
+
+export const updateStatusApplies = async (applyId: string, status: number) => {
+  const { data, error } = await supabase
+    .from('applies')
+    .update({ status: status })
+    .eq('uuid', applyId)
 
   if (error) throw new Error(error.message)
 

@@ -50,7 +50,7 @@ export type Apply = {
   id: number
   uuid: string
   booth: string
-  date: string
+  dates: object | null | []
   seq: number
   time: string
   name: string
@@ -63,7 +63,7 @@ export type Apply = {
 
 export type EditedApply = {
   id: number
-  date: string
+  dates: object | null | []
   time: string
   name: string
   url: string
