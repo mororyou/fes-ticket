@@ -14,16 +14,17 @@ import { useApplyMutate } from '@/hooks/apply/useMutate'
 import { Booth, RecordProps } from '@/types/types'
 import {
   Button,
+  Checkbox,
   Divider,
-  MultiSelect,
+  Group,
   Paper,
   TextInput as TextField,
 } from '@mantine/core'
 import { IconSignature } from '@tabler/icons'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { FC, useEffect, useState } from 'react'
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   const uuid = '67fb30df-8180-4947-a5df-e26fc725db94'
   const questionnaire = await getQuestionnaire(uuid)
   const booth = await getBooth(uuid)
@@ -48,8 +49,9 @@ type Props = {
 const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const [name, setName] = useState<string>('')
   const [url, setUrl] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [dates, setDates] = useState<any>([])
-  const [time, setTime] = useState<string>('')
+  const [dateDetails, setDateDetails] = useState<string>('')
   const [contents, setContents] = useState<any>([])
 
   const { createApply } = useApplyMutate()
@@ -81,8 +83,9 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       booth: booth.id as string,
       dates: dates,
       seq: seq,
-      time: time,
+      date_details: dateDetails,
       name: name,
+      email: email,
       url: url,
       contents: contents,
       status: 1,
@@ -106,7 +109,8 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   }, [questionnaire])
 
   return (
-    <Paper shadow={'sm'} p="md" m={'md'}>
+    <Paper shadow={'sm'} p="md" m={'md'} className="mx-auto w-2/5">
+      {/* PC幅 500~600px */}
       <Title
         title={booth.name}
         btn={null}
@@ -115,7 +119,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       <div className="grid grid-cols-12 gap-y-6">
         <div className="col-span-12">
           <TextField
-            label="ユーザー名"
+            label="お名前"
             withAsterisk
             onChange={(e) => {
               setName(e.target.value)
@@ -131,11 +135,42 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           />
         </div>
         <div className="col-span-12">
-          <MultiSelect
-            label="希望日時 時間帯"
-            data={SELECTER_DAYS}
-            onChange={setDates}
+          <TextField
+            label="メールアドレス"
+            withAsterisk
+            onChange={(e) => {
+              setEmail(e.target.value)
+            }}
           />
+        </div>
+        {/* チェックボックスに変更 */}
+        <div className="col-span-12">
+          <Checkbox.Group
+            label="希望日時"
+            withAsterisk
+            value={dates}
+            onChange={setDates}
+          >
+            <Group className="grid w-full grid-cols-2">
+              {SELECTER_DAYS &&
+                SELECTER_DAYS.map((date, index) => (
+                  <div className="col-span-1" key={index}>
+                    <Checkbox value={date.value} label={date.label} />
+                  </div>
+                ))}
+            </Group>
+          </Checkbox.Group>
+          <TextField
+            className="mt-4"
+            label="希望時間"
+            placeholder="細かい希望時間がある方はこちらにご記入ください。"
+            onChange={(e) => {
+              setDateDetails(e.target.value)
+            }}
+          />
+          <p className="ml-1 mt-1 text-xs text-gray-600">
+            時間が確定したらこちらから改めてご連絡します。
+          </p>
         </div>
 
         <Divider my="sm" className="col-span-12" size={'sm'} />
