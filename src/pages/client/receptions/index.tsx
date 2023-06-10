@@ -46,7 +46,7 @@ const Receptions = () => {
                     key={index}
                     uid={reception.uuid}
                     seq={reception.seq}
-                    time={reception.time}
+                    date_details={reception.date_details}
                     user={reception.name}
                     url={reception.url}
                   />
@@ -80,7 +80,7 @@ const ReceptionGridHead = () => (
 type ReceptionGridRowProps = {
   seq: number
   uid: string
-  time: string
+  date_details: string
   user: string
   url?: string | null
 }
@@ -88,14 +88,14 @@ type ReceptionGridRowProps = {
 const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
   seq,
   uid,
-  time,
+  date_details,
   user,
   url,
 }) => (
   <>
     <div className="grid grid-cols-12 items-center gap-x-4">
       <div className="col-span-1 text-center">{seq}</div>
-      <div className="col-span-2">{time}</div>
+      <div className="col-span-2">{date_details}</div>
       <div className="col-span-2">
         {user}
         {url ? (
