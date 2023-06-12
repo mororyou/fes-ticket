@@ -3,18 +3,18 @@ import nodemailer from 'nodemailer'
 
 export default function contact(req: NextApiRequest, res: NextApiResponse) {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
+    service: 'gmail',
     auth: {
       user: process.env.NEXT_PUBLIC_GMAIL_USER,
       pass: process.env.NEXT_PUBLIC_GMAIL_PASS,
     },
   })
+
   //管理人が受け取るメール
   const toHostMailData = {
-    from: `${req.body.email}`,
-    to: 'libefes-ticket.com',
-    subject: `【新規申し込み】${req.body.name}様より申し込みがありました`,
+    from: 'libefes-ticket.com',
+    to: `${req.body.email}`,
+    subject: `【受付完了メール】受付が完了しました。`,
     text: req.body.name + ' | Sent from: ' + req.body.email,
     html: `
       <p>【お名前】</p>
@@ -23,11 +23,21 @@ export default function contact(req: NextApiRequest, res: NextApiResponse) {
       <p>${req.body.url}</p>
       <p>【メールアドレス】</p>
       <p>${req.body.email}</p>
+      <p>申し込み内容確認・キャンセルはこちら</p>
+      <a href="${process.env.NEXT_PUBLIC_DOMAIN}/apply/complete/${req.body.uuid}">こちらから</a>
     `,
   }
 
-  transporter.sendMail(toHostMailData, function (err, info) {
-    if (err) console.log(err)
-    else console.log(info)
+  transporter.sendMail(toHostMailData, function (err: Error | null, info) {
+    if (err) {
+      console.log(`message : ${err.message}`)
+      console.log(err)
+      return
+    }
+
+    res.status(200).json({
+      success: true,
+      info: info,
+    })
   })
 }
