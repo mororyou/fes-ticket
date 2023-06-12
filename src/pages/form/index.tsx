@@ -78,8 +78,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
     )
   }
 
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const submitHandler = async () => {
     console.log('送信中...')
     const dateObj: any[] = []
     dates.map((date: string) => {
@@ -142,10 +141,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
         btn={null}
         icon={<IconSignature size={24} className="mr-2 text-gray-700" />}
       />
-      <form
-        className="grid grid-cols-12 gap-y-6"
-        onSubmit={(e: React.FormEvent<HTMLFormElement>) => submitHandler(e)}
-      >
+      <div className="grid grid-cols-12 gap-y-6">
         <div className="col-span-12">
           <TextField
             label="お名前"
@@ -281,9 +277,15 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
               </div>
             )
           })}
-      </form>
+      </div>
       <div className="my-12 flex justify-center md:justify-start">
-        <Button radius={'xs'} type="submit">
+        <Button
+          radius={'xs'}
+          onClick={(e) => {
+            e.preventDefault()
+            submitHandler()
+          }}
+        >
           送信
         </Button>
       </div>
