@@ -86,34 +86,16 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       dateObj.push(...res)
     })
 
-    const sendData = {
+    await createApply.mutate({
+      booth: booth.id as string,
+      dates: dateObj,
+      seq: seq,
+      date_details: dateDetails,
       name: name,
       email: email,
       url: url,
-    }
-
-    await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(sendData),
-    }).then(async (res) => {
-      if (res.status === 200) {
-        console.log('送信完了!!!')
-        await createApply.mutate({
-          booth: booth.id as string,
-          dates: dateObj,
-          seq: seq,
-          date_details: dateDetails,
-          name: name,
-          email: email,
-          url: url,
-          contents: contents,
-          status: 1,
-        })
-      }
+      contents: contents,
+      status: 1,
     })
   }
 

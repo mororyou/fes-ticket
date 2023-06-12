@@ -20,9 +20,30 @@ export const useApplyMutate = () => {
       return data
     },
     {
-      onSuccess: (data: any) => {
-        router.push(`/apply/complete/${data[0].uuid}`)
-        reset()
+      onSuccess: async (data: any) => {
+        const sendData = {
+          uuid: data[0].uuid,
+          name: data[0].name,
+          email: data[0].email,
+          url: data[0].url,
+          dates: data[0].dates,
+          date_details: data[0].date_details,
+          contents: data[0].contents,
+        }
+        await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sendData),
+        }).then(async (res) => {
+          if (res.status === 200) {
+            console.log('送信完了!!!')
+            reset()
+            router.push(`/apply/complete/${data[0].uuid}`)
+          }
+        })
       },
       onError: (err: any) => {
         alert(err.message)
