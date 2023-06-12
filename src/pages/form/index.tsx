@@ -78,17 +78,43 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
     )
   }
 
-  const submitHandler = async () => {
-    await createApply.mutate({
-      booth: booth.id as string,
-      dates: dates,
-      seq: seq,
-      date_details: dateDetails,
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log('送信中...')
+    const dateObj: any[] = []
+    dates.map((date: string) => {
+      const res = SELECTER_DAYS.filter((rec) => rec.value == date)
+      dateObj.push(...res)
+    })
+
+    const sendData = {
       name: name,
       email: email,
       url: url,
-      contents: contents,
-      status: 1,
+    }
+
+    await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    }).then(async (res) => {
+      if (res.status === 200) {
+        console.log('送信完了!!!')
+        await createApply.mutate({
+          booth: booth.id as string,
+          dates: dateObj,
+          seq: seq,
+          date_details: dateDetails,
+          name: name,
+          email: email,
+          url: url,
+          contents: contents,
+          status: 1,
+        })
+      }
     })
   }
 
@@ -109,14 +135,17 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   }, [questionnaire])
 
   return (
-    <Paper shadow={'sm'} p="md" m={'md'} className="mx-auto w-2/5">
+    <Paper shadow={'sm'} p="md" m={'md'} className="mx-auto lg:w-2/5">
       {/* PC幅 500~600px */}
       <Title
         title={booth.name}
         btn={null}
         icon={<IconSignature size={24} className="mr-2 text-gray-700" />}
       />
-      <div className="grid grid-cols-12 gap-y-6">
+      <form
+        className="grid grid-cols-12 gap-y-6"
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => submitHandler(e)}
+      >
         <div className="col-span-12">
           <TextField
             label="お名前"
@@ -252,15 +281,9 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
               </div>
             )
           })}
-      </div>
+      </form>
       <div className="my-12 flex justify-center md:justify-start">
-        <Button
-          radius={'xs'}
-          onClick={(e) => {
-            e.preventDefault()
-            submitHandler()
-          }}
-        >
+        <Button radius={'xs'} type="submit">
           送信
         </Button>
       </div>
