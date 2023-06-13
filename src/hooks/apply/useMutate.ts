@@ -30,7 +30,7 @@ export const useApplyMutate = () => {
           date_details: data[0].date_details,
           contents: data[0].contents,
         }
-        await fetch('/api/contact', {
+        await fetch('/api/mail/reception', {
           method: 'POST',
           headers: {
             Accept: 'application/json, text/plain, */*',
