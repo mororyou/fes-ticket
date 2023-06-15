@@ -213,11 +213,18 @@ const Schedules = () => {
               <div className="grid grid-cols-4 gap-4 px-2">
                 {applies &&
                   applies.map((apply: Apply) => (
-                    <ApplyItem
+                    <Paper
                       key={apply.id}
-                      apply={apply}
-                      onDragStart={onDragStart}
-                    />
+                      draggable="true"
+                      shadow="md"
+                      p="md"
+                      className="col-span-1 grid h-16 w-full grid-cols-12 grid-rows-2 gap-5 p-4"
+                      onDragStart={() => {
+                        onDragStart(apply)
+                      }}
+                    >
+                      <ApplyItem apply={apply} />
+                    </Paper>
                   ))}
               </div>
             </div>
