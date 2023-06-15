@@ -1,5 +1,7 @@
 import ClientLayout from '@/layout/client'
 import Title from '@/components/common/Title'
+import { RESOUCE_MAPS } from '@/constant/const'
+import ApplyItem from '@/components/client/schedule/Apply'
 import { useQueryClient } from 'react-query'
 import { useScheduleMutate } from '@/hooks/schedule/useMutate'
 import { useApplyMutate } from '@/hooks/apply/useMutate'
@@ -20,11 +22,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 const DnDCalendar = withDragAndDrop(Calendar)
 
 import dayjs from 'dayjs'
-import timezone from 'dayjs/plugin/timezone'
-import { RESOUCE_MAPS } from '@/constant/const'
-import ApplyItem from '@/components/client/schedule/Apply'
-dayjs.extend(timezone)
-dayjs.tz.setDefault('Asia/Tokyo')
+// import timezone from 'dayjs/plugin/timezone'
+// dayjs.extend(timezone)
+// dayjs.tz.setDefault('Asia/Tokyo')
 const localizer = dayjsLocalizer(dayjs)
 
 const Schedules = () => {
@@ -111,8 +111,10 @@ const Schedules = () => {
         title: draggedEvent.name,
         user: draggedEvent.name,
         date: dayjs(event.start).format('YYYY-MM-DD'),
-        start: dayjs(event.start).tz().format('YYYY-MM-DD HH:mm'),
-        end: dayjs(event.end).tz().format('YYYY-MM-DD HH:mm'),
+        start: dayjs(event.start).format('YYYY-MM-DD HH:mm'),
+        end: dayjs(event.end).format('YYYY-MM-DD HH:mm'),
+        // start: dayjs(event.start).tz().format('YYYY-MM-DD HH:mm'),
+        // end: dayjs(event.end).tz().format('YYYY-MM-DD HH:mm'),
         resourceId: event.resource,
         email: draggedEvent.email,
         url: `/client/receptions/${draggedEvent.uuid}`,
