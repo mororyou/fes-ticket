@@ -1,7 +1,11 @@
+import { FROM_MAIL_ADDRESS } from '@/constant/const'
 import { NextApiRequest, NextApiResponse } from 'next'
 import nodemailer from 'nodemailer'
 
-export default function contact(req: NextApiRequest, res: NextApiResponse) {
+/**
+ * 申し込み完了メール通知API
+ */
+export default function reception(req: NextApiRequest, res: NextApiResponse) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -10,9 +14,8 @@ export default function contact(req: NextApiRequest, res: NextApiResponse) {
     },
   })
 
-  //管理人が受け取るメール
-  const toHostMailData = {
-    from: 'libefes-ticket.com',
+  const mailData = {
+    from: FROM_MAIL_ADDRESS,
     to: `${req.body.email}`,
     subject: `【受付完了メール】受付が完了しました。`,
     text: req.body.name + ' | Sent from: ' + req.body.email,
@@ -28,13 +31,12 @@ export default function contact(req: NextApiRequest, res: NextApiResponse) {
     `,
   }
 
-  transporter.sendMail(toHostMailData, function (err: Error | null, info) {
+  transporter.sendMail(mailData, (err: Error | null, info) => {
     if (err) {
       console.log(`message : ${err.message}`)
       console.log(err)
       return
     }
-
     res.status(200).json({
       success: true,
       info: info,

@@ -3,7 +3,7 @@ import { UserForm } from '@/components/client/forms/User'
 import Title from '@/components/common/Title'
 import { useAuthContext } from '@/context/AuthContext'
 import { useClientMutate } from '@/hooks/client/useMutate'
-import useQueryClient from '@/hooks/client/useQueryClients'
+import { useQueryClients } from '@/hooks/client/useQueryClients'
 import { useSubscribeClients } from '@/hooks/client/useSubscribeClients'
 import ClientLayout from '@/layout/client'
 import useStore from '@/store'
@@ -19,7 +19,7 @@ const Users = () => {
   const { currentUser } = useAuthContext()
 
   const { createClient, updateClient } = useClientMutate()
-  const { data: clients } = useQueryClient()
+  const { data: clients } = useQueryClients()
   useSubscribeClients()
 
   return (

@@ -412,7 +412,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 /* react-big-calendar custom style */
 .rbc-timeslot-group {
-  min-height: 50px!important;
+  min-height: 80px!important;
 }
 
 .rbc-btn-group {

@@ -30,7 +30,7 @@ export const useApplyMutate = () => {
           date_details: data[0].date_details,
           contents: data[0].contents,
         }
-        await fetch('/api/contact', {
+        await fetch('/api/mail/reception', {
           method: 'POST',
           headers: {
             Accept: 'application/json, text/plain, */*',
@@ -66,8 +66,7 @@ export const useApplyMutate = () => {
     },
     {
       onSuccess: (data: any) => {
-        router.push(`/apply/complete/${data[0].uuid}`)
-        // reset()
+        reset()
       },
       onError: (err: any) => {
         alert(err.message)

@@ -47,6 +47,7 @@ type Props = {
 }
 
 const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
+  const [isloading, setIsLoading] = useState<boolean>(false)
   const [name, setName] = useState<string>('')
   const [url, setUrl] = useState<string>('')
   const [email, setEmail] = useState<string>('')
@@ -116,8 +117,12 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   }, [questionnaire])
 
   return (
-    <Paper shadow={'sm'} p="md" m={'md'} className="mx-auto lg:w-2/5">
-      {/* PC幅 500~600px */}
+    <Paper
+      shadow={'sm'}
+      p="md"
+      m={'md'}
+      className="mx-auto max-w-[600px] lg:w-2/5"
+    >
       <Title
         title={booth.name}
         btn={null}

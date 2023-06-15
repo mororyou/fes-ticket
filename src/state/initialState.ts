@@ -33,3 +33,19 @@ export const ClientState = {
   memo: '',
   created_at: '',
 }
+
+export const ScheduleState = {
+  id: 0,
+  title: '',
+  user: '',
+  date: '',
+  start: '',
+  end: '',
+  resourceId: 0,
+  url: '',
+  email: '',
+  contents: null,
+  designer: '',
+  engineer: '',
+  created_at: '',
+}

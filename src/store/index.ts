@@ -2,10 +2,12 @@ import {
   ApplyState,
   ClientState,
   QuestionnaireState,
+  ScheduleState,
 } from '@/state/initialState'
 import {
   EditedApply,
   EditedClient,
+  EditedSchedule,
   User,
   editedQuestionnaire,
 } from '@/types/types'
@@ -28,6 +30,10 @@ type State = {
   editedClient: EditedClient
   updatedEditedClient: (payload: EditedClient) => void
   resetEditedClient: () => void
+  // Schedule
+  editedSchedule: EditedSchedule
+  updatedEditedSchedule: (payload: EditedSchedule) => void
+  resetEditedSchedule: () => void
 }
 
 const useStore = create<State>((set) => ({
@@ -87,6 +93,30 @@ const useStore = create<State>((set) => ({
   resetEditedClient: () =>
     set({
       editedClient: ClientState,
+    }),
+
+  // Schedule
+  editedSchedule: ScheduleState,
+  updatedEditedSchedule: (payload) =>
+    set({
+      editedSchedule: {
+        id: payload.id,
+        title: payload.title,
+        user: payload.user,
+        date: payload.date,
+        start: payload.start,
+        end: payload.end,
+        resourceId: payload.resourceId,
+        url: payload.url,
+        email: payload.email,
+        contents: payload.contents,
+        designer: payload.designer,
+        engineer: payload.engineer,
+      },
+    }),
+  resetEditedSchedule: () =>
+    set({
+      editedSchedule: ScheduleState,
     }),
 }))
 
