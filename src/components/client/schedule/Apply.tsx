@@ -5,11 +5,10 @@ import { FC } from 'react'
 
 type Props = {
   apply: Apply
-  onDragStart: any
 }
 
-const ApplyItem: FC<Props> = ({ apply, onDragStart }) => (
-  <Paper className="grid-row-2 col-span-1 grid h-16 w-full grid-cols-12 gap-5 p-4 shadow-md">
+const ApplyItem: FC<Props> = ({ apply }) => (
+  <>
     <p className="col-start-1 col-end-9 row-start-1 row-end-2 text-sm">
       {apply.name}
     </p>
@@ -24,7 +23,7 @@ const ApplyItem: FC<Props> = ({ apply, onDragStart }) => (
         <IconExternalLink size={24} />
       </a>
     )}
-  </Paper>
+  </>
 )
 
 export default ApplyItem
