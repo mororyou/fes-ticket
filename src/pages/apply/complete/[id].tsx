@@ -28,7 +28,7 @@ type Props = {
 
 const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
   const contents = apply.contents as []
-
+  const dates = apply.dates as []
   const router = useRouter()
 
   const chancelEventHandler = async () => {
@@ -40,61 +40,91 @@ const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
   }
 
   return (
-    <Paper shadow={'sm'} p="md" m={'md'}>
+    <Paper
+      shadow={'sm'}
+      p="md"
+      m={'md'}
+      className="mx-auto max-w-[600px] lg:w-2/5"
+    >
       <p className="text-sm font-semibold">
         以下の内容で申し込みが完了しました。
       </p>
       <Divider className="my-4" />
-      <div className="grid grid-cols-1 gap-y-3 md:grid-cols-5 md:gap-y-5">
-        <p className="col-span-1 border-b border-gray-200 text-sm font-semibold text-gray-800">
-          ■ ブース名
-        </p>
-        <p className="col-span-1 pl-2 text-sm md:col-span-4">{booth.name}</p>
+      <div className="grid grid-cols-1 gap-y-3 md:gap-y-5">
+        <dl className="flex flex-col">
+          {/* Name */}
+          <dt className="mb-2 text-sm font-semibold text-gray-700">お名前</dt>
+          <dd className="mb-6 px-2 text-gray-700">{apply.name}</dd>
 
-        <p className="col-span-1 border-b border-gray-200 text-sm font-semibold text-gray-800">
-          ■ 申込者名
-        </p>
-        <p className="col-span-1 pl-2 text-sm md:col-span-4">{apply.name}</p>
+          {/* Url */}
+          {apply.url && (
+            <>
+              <dt className="mb-2 text-sm font-semibold text-gray-700">
+                リベシティプロフィールURL
+              </dt>
+              <dd className="mb-6 px-2 text-gray-700">
+                <a
+                  href={apply.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-500"
+                >
+                  {apply.url}
+                </a>
+              </dd>
+            </>
+          )}
 
-        <p className="col-span-1 border-b border-gray-200 text-sm font-semibold text-gray-800">
-          ■ プロフィールURL
-        </p>
-        <p className="col-span-1 pl-2 text-sm md:col-span-4">{apply.url}</p>
+          {/* Mail */}
+          <dt className="mb-2 text-sm font-semibold text-gray-700">
+            メールアドレス
+          </dt>
+          <dd className="mb-6 px-2 text-gray-700">{apply.email}</dd>
 
-        <p className="col-span-1 border-b border-gray-200 text-sm font-semibold text-gray-800">
-          ■ 日時
-        </p>
-        <p className="col-span-1 pl-2 text-sm md:col-span-4">
-          {/* { apply.date } - {apply.time ? apply.time : "未指定"} */}
-        </p>
+          {/* Dates */}
+          <dt className="mb-2 text-sm font-semibold text-gray-700">希望日時</dt>
+          <dd className="mb-6 grid grid-cols-3 gap-y-4 px-2 text-gray-700">
+            {dates?.map((date: any, index: number) => {
+              return (
+                <span key={index} className="text-gray-700">
+                  {date.label}
+                </span>
+              )
+            })}
+          </dd>
+
+          {/* DateDetails */}
+          <dt className="mb-2 text-sm font-semibold text-gray-700">
+            希望時間詳細
+          </dt>
+          <dd className="px-2 text-gray-700">{apply.date_details}</dd>
+        </dl>
+        <Divider />
         {contents &&
           contents.map((record: any, index: number) => {
             return (
-              <div
-                key={index}
-                className="col-span-1 flex w-full grid-cols-1 flex-col md:col-span-5 md:grid-cols-5"
-              >
-                <p className="col-span-1 border-b border-gray-200 text-sm font-semibold text-gray-800">
+              <dl key={index} className="flex flex-col">
+                <dt className="mb-2 text-sm font-semibold text-gray-700">
                   ■ {record.label}
-                </p>
-                <div className="col-span-1 pl-2 text-sm md:col-span-4">
+                </dt>
+                <dd className="mb-6 px-2 text-gray-700">
                   {typeof record.value !== 'object' ? (
                     <>{record.value}</>
                   ) : (
-                    <p className="flex flex-wrap items-center gap-x-3">
+                    <p className="grid grid-cols-3 items-center gap-4 md:grid-cols-4">
                       {record.value &&
                         record.value.map((_val: any, idx: number) => (
                           <span
                             key={idx}
-                            className="rounded-sm bg-gray-400 px-4 py-1 text-white"
+                            className="rounded-sm bg-gray-400 py-1 text-center text-sm text-white"
                           >
                             {_val}
                           </span>
                         ))}
                     </p>
                   )}
-                </div>
-              </div>
+                </dd>
+              </dl>
             )
           })}
       </div>

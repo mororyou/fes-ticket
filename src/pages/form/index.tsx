@@ -123,11 +123,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       m={'md'}
       className="mx-auto max-w-[600px] lg:w-2/5"
     >
-      <Title
-        title={booth.name}
-        btn={null}
-        icon={<IconSignature size={24} className="mr-2 text-gray-700" />}
-      />
+      <Title title={booth.name} btn={null} icon={null} />
       <div className="grid grid-cols-12 gap-y-6">
         <div className="col-span-12">
           <TextField
