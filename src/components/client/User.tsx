@@ -24,14 +24,16 @@ const UsersMemo: FC<Props> = ({ clients, setOpened, update }) => {
         </thead>
         <tbody>
           {clients &&
-            clients.map((client) => (
-              <TableRow
-                key={client.id}
-                client={client}
-                setOpened={setOpened}
-                update={update}
-              />
-            ))}
+            clients.map((client) => {
+              return (
+                <TableRow
+                  key={client.id}
+                  client={client}
+                  setOpened={setOpened}
+                  update={update}
+                />
+              )
+            })}
         </tbody>
       </Table>
     </ScrollArea>
@@ -50,7 +52,7 @@ const TableRow: FC<TableRowProps> = ({ client, setOpened, update }) => {
       <td className="flex flex-col gap-y-1">
         <p>{client.name}</p>
         <a href={client.url} target="_blank" rel="noopener noreferrer">
-          <span className="w-auto rounded-full bg-blue-700 py-1 px-2 text-[0.5rem] text-white hover:bg-opacity-70 ">
+          <span className="w-auto rounded-full bg-blue-700 px-2 py-1 text-[0.5rem] text-white hover:bg-opacity-70 ">
             プロフィール
           </span>
         </a>
@@ -72,7 +74,6 @@ const TableRow: FC<TableRowProps> = ({ client, setOpened, update }) => {
             size={16}
             onClick={(e) => {
               e.preventDefault()
-              console.log(client)
               update({
                 id: client.id,
                 name: client.name,

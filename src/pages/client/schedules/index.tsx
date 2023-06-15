@@ -6,7 +6,7 @@ import { useApplyMutate } from '@/hooks/apply/useMutate'
 import { useQuerySchedules } from '@/hooks/schedule/useQuerySchedules'
 import { useQueryApplies } from '@/hooks/apply/useQueryApplies'
 import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
-import { Apply, Schedule } from '@/types/types'
+import { Apply, Schedule, Client } from '@/types/types'
 import { useCallback, useMemo, useState } from 'react'
 
 import { Button, Modal, Paper, Select } from '@mantine/core'
@@ -241,13 +241,13 @@ const Schedules = () => {
             担当者
           </label>
           <div className="col-span-8 my-auto text-sm text-gray-700">
-            <Select data={clients} onChange={setEnginner} />
+            <Select data={clients as []} onChange={setEnginner} />
           </div>
           <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
             担当者
           </label>
           <div className="col-span-8 my-auto text-sm text-gray-700">
-            <Select data={clients} onChange={setDesigner} />
+            <Select data={clients as []} onChange={setDesigner} />
           </div>
         </div>
         <Button type="button">スケジュール詳細登録</Button>
