@@ -34,7 +34,6 @@ export const getApplies = async (boothId: string, date: string) => {
     .from('applies')
     .select('*')
     .eq('booth', boothId)
-    .eq('date', date)
 
   if (error) throw new Error(error.message)
 

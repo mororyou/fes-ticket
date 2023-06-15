@@ -2,12 +2,11 @@ import { supabase } from '@/libs/supabase'
 import { Client } from '@/types/types'
 import { useQuery } from 'react-query'
 
-export const useQueryClients = () => {
+export const useQueryClientSelector = () => {
   const getClients = async () => {
     const { data, error } = await supabase
       .from('clients')
-      .select('*')
-      // .select('value:id, label:name')
+      .select('value:id, label:name')
       .order('id', { ascending: true })
 
     if (error) throw Error(error.message)
@@ -16,7 +15,7 @@ export const useQueryClients = () => {
   }
 
   return useQuery<Client[], Error>({
-    queryKey: ['clients'],
+    queryKey: ['clientSelector'],
     queryFn: getClients,
     staleTime: Infinity,
   })

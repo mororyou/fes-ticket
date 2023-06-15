@@ -64,3 +64,8 @@ export const SELECTER_DAYS = [
 
 // 項目が必須な種別
 export const FORM_REQUIRE_ITEMS = ['checkbox', 'radio', 'select', 'multi']
+
+export const RESOUCE_MAPS = [
+  { resourceId: 1, resourceTitle: 'ブース１' },
+  { resourceId: 2, resourceTitle: 'ブース２' },
+]

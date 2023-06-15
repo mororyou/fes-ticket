@@ -114,3 +114,34 @@ export type Event = {
   contents: Object | null
   date: string
 }
+
+export type Schedule = {
+  id: number
+  title: string
+  user: string
+  date: string
+  start: string
+  end: string
+  resourceId: number | null
+  url: string
+  email: string
+  contents: Object | null
+  designer: string
+  engineer: string
+  created_at: string
+}
+
+export type EditedSchedule = {
+  id: number
+  title: string
+  user: string
+  date: string
+  start: string
+  end: string
+  resourceId: number | null
+  url: string
+  email: string
+  contents: Object | null
+  designer: string
+  engineer: string
+}

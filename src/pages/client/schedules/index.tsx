@@ -1,47 +1,49 @@
 import ClientLayout from '@/layout/client'
 import Title from '@/components/common/Title'
-import { getApplies } from '@/fetch/apply'
-import { getSchedules } from '@/fetch/schedule'
-import { Apply, Event } from '@/types/types'
-import { useAuthContext } from '@/context/AuthContext'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Paper } from '@mantine/core'
+import { useQueryClient } from 'react-query'
+import { useScheduleMutate } from '@/hooks/schedule/useMutate'
+import { useApplyMutate } from '@/hooks/apply/useMutate'
+import { useQuerySchedules } from '@/hooks/schedule/useQuerySchedules'
+import { useQueryApplies } from '@/hooks/apply/useQueryApplies'
+import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
+import { Apply, Schedule } from '@/types/types'
+import { useCallback, useMemo, useState } from 'react'
+
+import { Button, Modal, Paper, Select } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { IconCalendarEvent, IconExternalLink } from '@tabler/icons'
-import dayjs from 'dayjs'
+
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-const localizer = dayjsLocalizer(dayjs)
-
 const DnDCalendar = withDragAndDrop(Calendar)
 
-const resourceMap = [
-  { resourceId: 1, resourceTitle: 'ブース１' },
-  { resourceId: 2, resourceTitle: 'ブース２' },
-]
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import { RESOUCE_MAPS } from '@/constant/const'
+import ApplyItem from '@/components/client/schedule/Apply'
+dayjs.extend(timezone)
+dayjs.tz.setDefault('Asia/Tokyo')
+const localizer = dayjsLocalizer(dayjs)
 
 const Schedules = () => {
   const [date, setDate] = useState(new Date(2023, 6, 15))
-  const [schedules, setSchedules] = useState<Event[]>([])
-  const [applies, setApplies] = useState<Apply[]>([])
-  const [draggedEvent, setDraggedEvent] = useState<Event | null | string>(null)
+  const [draggedEvent, setDraggedEvent] = useState<any>(null)
+  const [opend, { open, close }] = useDisclosure(false)
+  const [event, setEvent] = useState<any>(null)
+  const [engineer, setEnginner] = useState<string | null>('')
+  const [designer, setDesigner] = useState<string | null>('')
 
-  const { currentUser } = useAuthContext()
+  const { createSchedule, updatedSchedule } = useScheduleMutate()
+  const { updatedApply } = useApplyMutate()
 
-  useEffect(() => {
-    const f = async () => {
-      if (currentUser !== undefined && currentUser?.boothId !== null) {
-        const datestring = dayjs(date).format('YYYY-MM-DD')
-        const res_scd = await getSchedules(datestring)
-        await setSchedules(res_scd)
-        const res_apply = await getApplies(currentUser?.boothId, datestring)
-        await setApplies(res_apply)
-        console.log(res_apply)
-      }
-    }
-    f()
-  }, [date, currentUser])
+  const queryClient = useQueryClient()
+  const { data: schedules, refetch: refetchSchedule } = useQuerySchedules()
+  const { data: applies, refetch: refetchApply } = useQueryApplies(
+    dayjs(date).format('YYYY-MM-DD')
+  )
+  const { data: clients } = useQueryClientSelector()
 
   // react-big-calendar custom hook function
   const startAccessor = useCallback((event: any) => new Date(event.start), [])
@@ -51,37 +53,37 @@ const Schedules = () => {
   const onNavigate = useCallback((newDate: Date) => setDate(newDate), [setDate])
   const onResizeEvent = useCallback(
     async ({ event, start, end }: { event: any; start: any; end: any }) => {
-      await setSchedules((prev: Event[]): Event | any => {
-        const existing = prev.find((ev) => ev.id === event.id) ?? {}
-        const filtered = prev.filter((ev) => ev.id !== event.id)
-        return [...filtered, { ...existing, start, end }]
-      })
-      await eventUpdateHandler({ event, start, end })
-      // DB更新関数
+      const resizeData = event
+      resizeData.start = start
+      resizeData.end = end
+      const prevSchedules = queryClient.getQueryData<Schedule[]>(['schedules'])
+      if (prevSchedules) {
+        queryClient.setQueryData(
+          ['schedules'],
+          prevSchedules.map((sdl) => (sdl.id === event.id ? resizeData : sdl))
+        )
+      }
+      // Schedule Update 処理
+      // updatedSchedule()
     },
-    [setSchedules]
+    [queryClient]
   )
   const onEventDrop = useCallback(
-    async ({
-      event,
-      start,
-      end,
-      resourceId,
-    }: {
-      event: any
-      start: any
-      end: any
-      resourceId: any
-    }) => {
-      await setSchedules((prev: Event[]): Event | any => {
-        const existing = prev.find((ev) => ev.id === event.id) ?? {}
-        const filtered = prev.filter((ev) => ev.id !== event.id)
-        return [...filtered, { ...existing, start, end, resourceId }]
-      })
-      // DB更新関数
-      await eventUpdateHandler({ event, start, end })
+    async ({ event, start, end }: { event: any; start: any; end: any }) => {
+      const dropData = event
+      dropData.start = start
+      dropData.end = end
+      const prevSchedules = queryClient.getQueryData<Schedule[]>(['schedules'])
+      if (prevSchedules) {
+        queryClient.setQueryData(
+          ['schedules'],
+          prevSchedules.map((sdl) => (sdl.id === event.id ? dropData : sdl))
+        )
+      }
+      // Schedule Update 処理
+      // updatedSchedule()
     },
-    [setSchedules]
+    [queryClient]
   )
   const eventPropGetter = useCallback(
     (event: any) => ({
@@ -100,54 +102,51 @@ const Schedules = () => {
     [draggedEvent]
   )
   const onDropFromOutside = useCallback(
-    ({ start, end }: { start: any; end: any }) => {
+    async (event: any) => {
       if (draggedEvent === 'undroppable') {
         setDraggedEvent(null)
         return
       }
-      console.group('onDropFromOutside')
-      console.log(`start:${start}`)
-      console.log(`end:${end}`)
-      console.log(draggedEvent)
-      console.groupEnd()
+      await createSchedule.mutate({
+        title: draggedEvent.name,
+        user: draggedEvent.name,
+        date: dayjs(event.start).format('YYYY-MM-DD'),
+        start: dayjs(event.start).tz().format('YYYY-MM-DD HH:mm'),
+        end: dayjs(event.end).tz().format('YYYY-MM-DD HH:mm'),
+        resourceId: event.resource,
+        email: draggedEvent.email,
+        url: `/client/receptions/${draggedEvent.uuid}`,
+        contents: draggedEvent?.contents,
+        engineer: '',
+        designer: '',
+      })
+      await updatedApply.mutate({
+        id: draggedEvent.id,
+        dates: draggedEvent.dates,
+        date_details: draggedEvent.date_details,
+        name: draggedEvent.name,
+        email: draggedEvent.email,
+        url: draggedEvent.url,
+        contents: draggedEvent.contents,
+        status: 2,
+      })
+      // refetch
+      await refetchSchedule()
+      await refetchApply()
       setDraggedEvent(null)
-      // newScheduleHandler()
     },
-    [draggedEvent]
+    [draggedEvent, createSchedule, updatedApply, refetchSchedule, refetchApply]
   )
+  //
   const onDragStart = useCallback((event: any) => setDraggedEvent(event), [])
 
-  const eventStoreHandler = ({
-    event,
-    start,
-    end,
-  }: {
-    event: Event
-    start: any
-    end: any
-  }) => {
-    console.group('eventStoreHandler')
-    console.log(event)
-    console.log(start)
-    console.log(end)
-    console.groupEnd()
-  }
-
-  const eventUpdateHandler = ({
-    event,
-    start,
-    end,
-  }: {
-    event: Event
-    start: any
-    end: any
-  }) => {
-    console.group('eventUpdateHandler')
-    console.log(event)
-    console.log(start)
-    console.log(end)
-    console.groupEnd()
-  }
+  const onDoubleClickEvent = useCallback(
+    (event: Object): void => {
+      open()
+      setEvent(event)
+    },
+    [open]
+  )
 
   // react-big-calendar custom useMemo
   const { defaultDate, formats, messages } = useMemo(
@@ -185,7 +184,7 @@ const Schedules = () => {
                 defaultDate={defaultDate}
                 events={schedules}
                 localizer={localizer}
-                resources={resourceMap}
+                resources={RESOUCE_MAPS}
                 showMultiDayTimes={true}
                 step={30}
                 min={new Date(2023, 7, 15, 9, 0)}
@@ -198,7 +197,8 @@ const Schedules = () => {
                 onNavigate={onNavigate}
                 onDropFromOutside={onDropFromOutside}
                 onDragOver={onDragOver}
-                // onEventDrop={onEventDrop}
+                onDoubleClickEvent={onDoubleClickEvent}
+                onEventDrop={onEventDrop}
                 onEventResize={onResizeEvent}
                 resizable
                 selectable
@@ -210,43 +210,48 @@ const Schedules = () => {
               </h3>
               <div className="grid grid-cols-4 gap-4 px-2">
                 {applies &&
-                  applies.map((apply: Apply) => {
-                    return (
-                      <Paper
-                        key={apply.id}
-                        className="col-span-1 grid h-16 w-full grid-cols-12 grid-rows-2 gap-5 p-4"
-                        p={'md'}
-                        shadow="md"
-                        draggable="true"
-                        onDragStart={() => {
-                          onDragStart(apply)
-                        }}
-                      >
-                        <p className="col-start-1 col-end-9 row-start-1 row-end-2 text-sm">
-                          {apply.status} - {apply.name}
-                        </p>
-
-                        {apply.url && (
-                          <a
-                            href={apply.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="col-start-9 col-end-13 row-start-1 row-end-3 flex items-center justify-end"
-                          >
-                            <IconExternalLink size={32} />
-                          </a>
-                        )}
-                        <span className="col-start-1 col-end-9 row-start-2 row-end-3 text-xs">
-                          {apply.date_details}
-                        </span>
-                      </Paper>
-                    )
-                  })}
+                  applies.map((apply: Apply) => (
+                    <ApplyItem
+                      key={apply.id}
+                      apply={apply}
+                      onDragStart={onDragStart}
+                    />
+                  ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Modal opened={opend} onClose={close} title="詳細" size="lg">
+        <div className="mb-8 grid grid-cols-12 gap-x-8 gap-y-4">
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            日付
+          </label>
+          <div className="col-span-8 my-auto text-sm text-gray-700">
+            {dayjs(event?.start).format(' YYYY/MM/DD')}
+          </div>
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            時間
+          </label>
+          <div className="col-span-8 text-sm text-gray-700">
+            {dayjs(event?.start).format('HH:mm')} -{' '}
+            {dayjs(event?.end).format('HH:mm')}
+          </div>
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            担当者
+          </label>
+          <div className="col-span-8 my-auto text-sm text-gray-700">
+            <Select data={clients} onChange={setEnginner} />
+          </div>
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            担当者
+          </label>
+          <div className="col-span-8 my-auto text-sm text-gray-700">
+            <Select data={clients} onChange={setDesigner} />
+          </div>
+        </div>
+        <Button type="button">スケジュール詳細登録</Button>
+      </Modal>
     </ClientLayout>
   )
 }

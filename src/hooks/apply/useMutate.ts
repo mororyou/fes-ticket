@@ -66,8 +66,7 @@ export const useApplyMutate = () => {
     },
     {
       onSuccess: (data: any) => {
-        router.push(`/apply/complete/${data[0].uuid}`)
-        // reset()
+        reset()
       },
       onError: (err: any) => {
         alert(err.message)
