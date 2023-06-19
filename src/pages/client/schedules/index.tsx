@@ -13,7 +13,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { Button, Modal, Paper, Select } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconCalendarEvent, IconExternalLink } from '@tabler/icons'
+import { IconCalendarEvent } from '@tabler/icons'
 
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -113,8 +113,6 @@ const Schedules = () => {
         date: dayjs(event.start).format('YYYY-MM-DD'),
         start: dayjs(event.start).format('YYYY-MM-DD HH:mm'),
         end: dayjs(event.end).format('YYYY-MM-DD HH:mm'),
-        // start: dayjs(event.start).tz().format('YYYY-MM-DD HH:mm'),
-        // end: dayjs(event.end).tz().format('YYYY-MM-DD HH:mm'),
         resourceId: event.resource,
         email: draggedEvent.email,
         url: `/client/receptions/${draggedEvent.uuid}`,
@@ -125,11 +123,9 @@ const Schedules = () => {
       await updatedApply.mutate({
         id: draggedEvent.id,
         dates: draggedEvent.dates,
-        date_details: draggedEvent.date_details,
         name: draggedEvent.name,
         email: draggedEvent.email,
         url: draggedEvent.url,
-        contents: draggedEvent.contents,
         status: 2,
       })
       // refetch
@@ -213,18 +209,11 @@ const Schedules = () => {
               <div className="grid grid-cols-4 gap-4 px-2">
                 {applies &&
                   applies.map((apply: Apply) => (
-                    <Paper
+                    <ApplyItem
+                      apply={apply}
+                      onDragStart={onDragStart}
                       key={apply.id}
-                      draggable="true"
-                      shadow="md"
-                      p="md"
-                      className="col-span-1 grid h-16 w-full grid-cols-12 grid-rows-2 gap-5 p-4"
-                      onDragStart={() => {
-                        onDragStart(apply)
-                      }}
-                    >
-                      <ApplyItem apply={apply} />
-                    </Paper>
+                    />
                   ))}
               </div>
             </div>

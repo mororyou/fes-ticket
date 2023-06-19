@@ -25,40 +25,71 @@ export const DATES = [
 
 export const SELECTER_DAYS = [
   {
-    label: '7/15 AM',
+    label: '7/15(土) AM',
     value: '2023-07-15-AM',
     date: '2023/7/15',
     timezone: 'AM',
   },
   {
-    label: '7/15 PM',
+    label: '7/15(土) PM',
     value: '2023-07-15-PM',
     date: '2023/7/15',
     timezone: 'PM',
   },
   {
-    label: '7/16 AM',
+    label: '7/16(日) AM',
     value: '2023-07-16-AM',
     date: '2023/7/16',
     timezone: 'AM',
   },
   {
-    label: '7/16 PM',
+    label: '7/16(日) PM',
     value: '2023-07-16-PM',
     date: '2023/7/16',
     timezone: 'PM',
   },
   {
-    label: '7/17 AM',
+    label: '7/17(月) AM',
     value: '2023-07-17-AM',
     date: '2023/7/17',
     timezone: 'AM',
   },
   {
-    label: '7/17 PM',
+    label: '7/17(月) PM',
     value: '2023-07-17-PM',
     date: '2023/7/17',
     timezone: 'PM',
+  },
+]
+
+export const MULTISELECT_ITEMS = [
+  {
+    label: 'デザイン',
+    value: 'desgin',
+  },
+  {
+    label: 'SEO',
+    value: 'seo',
+  },
+  {
+    label: '業務改善',
+    value: 'improvement',
+  },
+  {
+    label: 'システム',
+    value: 'system',
+  },
+  {
+    label: 'パソコンの使い方',
+    value: 'treatment',
+  },
+  {
+    label: '転職相談',
+    value: 'counseling',
+  },
+  {
+    label: 'その他',
+    value: 'etc',
   },
 ]
 

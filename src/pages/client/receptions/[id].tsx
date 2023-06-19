@@ -25,8 +25,6 @@ type Props = {
 }
 
 const Reception: FC<Props> = ({ id, apply }) => {
-  const contents = apply.contents as []
-
   return (
     <ClientLayout title="申し込み詳細">
       <Title
@@ -46,29 +44,7 @@ const Reception: FC<Props> = ({ id, apply }) => {
             <IconChecks className="mr-2" />
             申し込みフォーム内容
           </h3>
-          <div className="grid grid-cols-1 gap-y-4">
-            {contents &&
-              contents.map((record: any, index: number) => {
-                return (
-                  <div
-                    className="col-span-1 grid grid-cols-12 gap-x-2 text-sm"
-                    key={index}
-                  >
-                    <p className="col-span-4 font-semibold">{record.label}</p>
-                    {typeof record.value !== 'object' ? (
-                      <p className="col-span-8">{record.value}</p>
-                    ) : (
-                      <p className="col-span-8 flex flex-wrap items-center gap-x-3">
-                        {record.value &&
-                          record.value.map((_val: any, idx: number) => (
-                            <span key={idx}>{_val}</span>
-                          ))}
-                      </p>
-                    )}
-                  </div>
-                )
-              })}
-          </div>
+          <div className="grid grid-cols-1 gap-y-4"></div>
         </Paper>
         <Paper shadow="xs" p="md" className="col-span-12 md:col-span-5">
           <h3 className="mb-6 flex items-center justify-start border-b-[1.5px] border-gray-300 pb-1 text-sm font-semibold text-gray-500">
