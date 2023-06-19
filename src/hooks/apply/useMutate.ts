@@ -27,8 +27,6 @@ export const useApplyMutate = () => {
           email: data[0].email,
           url: data[0].url,
           dates: data[0].dates,
-          date_details: data[0].date_details,
-          contents: data[0].contents,
         }
         await fetch('/api/mail/reception', {
           method: 'POST',
