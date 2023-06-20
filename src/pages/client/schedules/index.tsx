@@ -122,10 +122,13 @@ const Schedules = () => {
       })
       await updatedApply.mutate({
         id: draggedEvent.id,
-        dates: draggedEvent.dates,
         name: draggedEvent.name,
-        email: draggedEvent.email,
         url: draggedEvent.url,
+        email: draggedEvent.email,
+        dates: draggedEvent.dates,
+        categories: draggedEvent.categoires,
+        content: draggedEvent.content,
+        etc: draggedEvent.etc,
         status: 2,
       })
       // refetch
