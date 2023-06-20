@@ -63,10 +63,13 @@ const useStore = create<State>((set) => ({
     set({
       editedApply: {
         id: payload.id,
-        dates: payload.dates,
         name: payload.name,
-        email: payload.email,
         url: payload.url,
+        email: payload.email,
+        dates: payload.dates,
+        categories: payload.categories,
+        content: payload.content,
+        etc: payload.etc,
         status: payload.status,
       },
     }),

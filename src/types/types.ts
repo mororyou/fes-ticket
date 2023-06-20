@@ -50,11 +50,14 @@ export type Apply = {
   id: number
   uuid: string
   booth: string
-  dates: object | null | []
   seq: number
   name: string
-  email: string
   url: string
+  email: string
+  dates: object | null | []
+  categories: object | null | []
+  content: string
+  etc: string
   status: number
   created_at: string
   updated_at: string
@@ -62,10 +65,13 @@ export type Apply = {
 
 export type EditedApply = {
   id: number
-  dates: object | null | []
   name: string
-  email: string
   url: string
+  email: string
+  dates: object | null | []
+  categories: object | null | []
+  content: string
+  etc: string
   status: number
 }
 
