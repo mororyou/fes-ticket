@@ -44,23 +44,28 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const [content, setContent] = useState<string>('')
   const [etc, setEtc] = useState<string>('')
   const [disable, setDisable] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { createApply } = useApplyMutate()
 
   const submitHandler = async () => {
-    console.log('送信中...')
+    setIsLoading(true)
     const dateObj: any[] = []
     dates.map((date: string) => {
       const res = SELECTER_DAYS.filter((rec) => rec.value == date)
       dateObj.push(...res)
     })
+    const categoryObj: any[] = []
 
     await createApply.mutate({
       booth: booth.id as string,
-      dates: dateObj,
       seq: seq,
       name: name,
-      email: email,
       url: url,
+      email: email,
+      dates: dateObj,
+      categories: categories,
+      content: content,
+      etc: etc,
       status: 1,
     })
   }
@@ -85,10 +90,17 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       m={'md'}
       className="mx-auto max-w-[600px] lg:w-2/5"
     >
-      <p className="mb-6 border-b border-gray-600 pb-1 text-base font-bold leading-9 text-gray-700 lg:text-lg">
+      {isLoading && <LoadingComponent />}
+      <h1 className="mb-6 text-center text-base font-bold leading-9 text-gray-700 lg:text-lg">
         {booth.name} <br />
         予約フォーム
+      </h1>
+      <p className="rounded-md border border-gray-200 bg-white p-2 text-sm leading-6 text-gray-700">
+        ※フォーム送信後、数日以内に「予約確定メール」をお送りします。そちらのメールを持って予約確定となりますので、必ずご確認をお願いします。
+        <br />
+        ※すでに枠が埋まってしまっている場合など、ご希望に添えず、予約をお取りできない場合もございます。あらかじめご了承ください。
       </p>
+      <Divider className="my-5" />
       <div className="grid grid-cols-12 gap-y-6">
         <div className="col-span-12">
           <TextField
@@ -113,6 +125,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
                 <ArbitraryBadge />
               </label>
             }
+            type="text"
             styles={{ input: { fontSize: '16px' } }}
             onChange={(e) => {
               setUrl(e.target.value)
@@ -127,6 +140,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
                 <RequireBadge />
               </label>
             }
+            type="email"
             styles={{ input: { fontSize: '16px' } }}
             onChange={(e) => {
               setEmail(e.target.value)
@@ -146,12 +160,15 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
             onChange={setDates}
           >
             <Group className="grid w-full grid-cols-2">
+              <div className="col-span-1"></div>
               {SELECTER_DAYS &&
-                SELECTER_DAYS.map((date, index) => (
-                  <div className="col-span-1" key={index}>
-                    <Checkbox value={date.value} label={date.label} />
-                  </div>
-                ))}
+                SELECTER_DAYS.map((date, index) => {
+                  return (
+                    <div className="col-span-1" key={index}>
+                      <Checkbox value={date.value} label={date.label} />
+                    </div>
+                  )
+                })}
             </Group>
           </Checkbox.Group>
         </div>
@@ -170,9 +187,9 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           >
             <Group className="grid w-full grid-cols-2">
               {MULTISELECT_ITEMS &&
-                MULTISELECT_ITEMS.map((date, index) => (
+                MULTISELECT_ITEMS.map((category, index) => (
                   <div className="col-span-1" key={index}>
-                    <Checkbox value={date.value} label={date.label} />
+                    <Checkbox value={category.value} label={category.label} />
                   </div>
                 ))}
             </Group>
@@ -243,4 +260,18 @@ const ArbitraryBadge = () => (
   <span className="rounded-xs ml-2 border border-gray-500 px-2 py-1 text-xs text-gray-500">
     任意
   </span>
+)
+
+const LoadingComponent = () => (
+  <div className="absolute left-0 top-0 z-50 flex min-h-screen w-screen items-center justify-center bg-white bg-opacity-50">
+    <div className="loader">
+      <p className="heading">送信中</p>
+      <div className="loading">
+        <div className="load"></div>
+        <div className="load"></div>
+        <div className="load"></div>
+        <div className="load"></div>
+      </div>
+    </div>
+  </div>
 )

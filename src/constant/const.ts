@@ -25,12 +25,6 @@ export const DATES = [
 
 export const SELECTER_DAYS = [
   {
-    label: '7/15(土) AM',
-    value: '2023-07-15-AM',
-    date: '2023/7/15',
-    timezone: 'AM',
-  },
-  {
     label: '7/15(土) PM',
     value: '2023-07-15-PM',
     date: '2023/7/15',
