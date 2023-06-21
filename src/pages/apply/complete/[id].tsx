@@ -1,4 +1,4 @@
-import { MULTISELECT_ITEMS } from '@/constant/const'
+import { MULTISELECT_ITEMS, SELECTER_DAYS } from '@/constant/const'
 import { getApply, updateStatusApplies } from '@/fetch/apply'
 import { getBooth } from '@/fetch/booth'
 import { Apply, Booth } from '@/types/types'
@@ -28,16 +28,23 @@ type Props = {
 
 const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
   const router = useRouter()
-  const [dates, setDates] = useState<[]>([])
+  const [dates, setDates] = useState<any>([])
   const [categories, setCategories] = useState<any>([])
   useEffect(() => {
+    const tmpDates = apply.dates as []
+    const dateObj: any[] = []
+    tmpDates.map((date: string) => {
+      const res = SELECTER_DAYS.filter((rec) => rec.value == date)
+      dateObj.push(...res)
+    })
+
     const tmpCategory = apply.categories as []
     const categoryObj: any[] = []
     tmpCategory.map((category) => {
       const res = MULTISELECT_ITEMS.filter((rec) => rec.value == category)
       categoryObj.push(...res)
     })
-    setDates(apply.dates as [])
+    setDates(dateObj)
     setCategories(categoryObj)
   }, [apply])
 

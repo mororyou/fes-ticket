@@ -44,25 +44,18 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
   const [content, setContent] = useState<string>('')
   const [etc, setEtc] = useState<string>('')
   const [disable, setDisable] = useState<boolean>(true)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const { createApply } = useApplyMutate()
 
   const submitHandler = async () => {
-    setIsLoading(true)
-    const dateObj: any[] = []
-    dates.map((date: string) => {
-      const res = SELECTER_DAYS.filter((rec) => rec.value == date)
-      dateObj.push(...res)
-    })
-    const categoryObj: any[] = []
-
+    await setIsLoading(true)
     await createApply.mutate({
       booth: booth.id as string,
       seq: seq,
       name: name,
       url: url,
       email: email,
-      dates: dateObj,
+      dates: dates,
       categories: categories,
       content: content,
       etc: etc,
