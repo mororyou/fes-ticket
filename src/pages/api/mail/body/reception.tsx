@@ -92,7 +92,7 @@ export const ReceptionBody = (body: any) => {
             <td align="center" valign="top">
               <img
                 src="https://libecity-fes-ticket.vercel.app/images/logo_Booth_long_color1_tp.png"
-                width="100%"
+                width="480px"
                 height="auto"
                 alt="輝く力をサポート ITお悩み相談 by福岡クリエイターズ"
               />
