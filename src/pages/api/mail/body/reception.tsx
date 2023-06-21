@@ -88,16 +88,6 @@ export const ReceptionBody = (body: any) => {
     <>
       <table style={wrap}>
         <tbody style={wrapInner}>
-          <tr>
-            <td align="center" valign="top">
-              <img
-                src="https://libecity-fes-ticket.vercel.app/images/logo_Booth_long_color1_tp.png"
-                width="480px"
-                height="auto"
-                alt="輝く力をサポート ITお悩み相談 by福岡クリエイターズ"
-              />
-            </td>
-          </tr>
           <tr style={row}>
             <td>
               <p style={thanks}>お申し込みありがとうございます。・</p>
