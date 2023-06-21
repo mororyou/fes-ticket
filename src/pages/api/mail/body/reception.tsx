@@ -90,7 +90,7 @@ export const ReceptionBody = (body: any) => {
         <tbody style={wrapInner}>
           <tr style={row}>
             <td>
-              <p style={thanks}>お申し込みありがとうございます。・</p>
+              <p style={thanks}>お申し込みありがとうございます。</p>
               <p>
                 下記の内容にて受付が完了しました。
                 <br />
