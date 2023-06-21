@@ -24,9 +24,12 @@ export const useApplyMutate = () => {
         const sendData = {
           uuid: data[0].uuid,
           name: data[0].name,
-          email: data[0].email,
           url: data[0].url,
+          email: data[0].email,
           dates: data[0].dates,
+          categories: data[0].categories,
+          content: data[0].content,
+          etc: data[0].etc,
         }
         await fetch('/api/mail/reception', {
           method: 'POST',
