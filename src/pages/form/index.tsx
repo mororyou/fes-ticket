@@ -256,7 +256,7 @@ const ArbitraryBadge = () => (
 )
 
 const LoadingComponent = () => (
-  <div className="absolute left-0 top-0 z-50 flex min-h-screen w-screen items-center justify-center bg-white bg-opacity-50">
+  <div className="fixed left-0 top-0 z-50 flex min-h-screen w-screen items-center justify-center bg-white bg-opacity-90">
     <div className="loader">
       <p className="heading">送信中</p>
       <div className="loading">
