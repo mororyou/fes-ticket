@@ -123,10 +123,14 @@ export default function reception(req: NextApiRequest, res: NextApiResponse) {
     </body>
     </html>`
 
+  const toMails = []
+  toMails.push(req.body.email)
+  toMails.push('m.ryousuke0401@gmail.com')
+
   const mailOption = {
     from: FROM_MAIL_ADDRESS,
-    to: `${req.body.email}`,
-    subject: `【受付完了メール】受付が完了しました。`,
+    to: toMails,
+    subject: `【ITお悩み相談by福岡クリエイターズ】受付が完了しました。`,
     text: req.body.name + ' | Sent from: ' + req.body.email,
     html: message,
   }
