@@ -33,16 +33,16 @@ export const NavItems: NaviItem[] = [
     color: 'blue',
     icon: <IconUser size={16} />,
   },
-  {
-    pageId: 'questionnaire',
-    title: 'フォーム設定',
-    color: 'blue',
-    icon: <IconSignature size={16} />,
-  },
-  {
-    pageId: 'booth',
-    title: 'ブース設定',
-    color: 'blue',
-    icon: <IconFlag size={16} />,
-  },
+  // {
+  //   pageId: 'questionnaire',
+  //   title: 'フォーム設定',
+  //   color: 'blue',
+  //   icon: <IconSignature size={16} />,
+  // },
+  // {
+  //   pageId: 'booth',
+  //   title: 'ブース設定',
+  //   color: 'blue',
+  //   icon: <IconFlag size={16} />,
+  // },
 ]
