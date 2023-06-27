@@ -58,28 +58,36 @@ export const SELECTER_DAYS = [
 
 export const MULTISELECT_ITEMS = [
   {
+    label: 'Webサイト、ホームページ',
+    value: 'web',
+  },
+  {
     label: 'デザイン',
-    value: 'desgin',
-  },
-  {
-    label: 'SEO',
-    value: 'seo',
-  },
-  {
-    label: '業務改善',
-    value: 'improvement',
+    value: 'design',
   },
   {
     label: 'システム',
     value: 'system',
   },
   {
-    label: 'パソコンの使い方',
+    label: 'マーケティング',
+    value: 'marketing',
+  },
+  {
+    label: '業務改善',
+    value: 'improvement',
+  },
+  {
+    label: 'Web集客',
+    value: 'attracting',
+  },
+  {
+    label: 'パソコンやスマホの使い方',
     value: 'treatment',
   },
   {
-    label: '転職相談',
-    value: 'counseling',
+    label: 'キャリア、転職',
+    value: 'carrier',
   },
   {
     label: 'その他',
