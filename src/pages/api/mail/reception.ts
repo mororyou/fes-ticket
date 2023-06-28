@@ -125,7 +125,7 @@ export default function reception(req: NextApiRequest, res: NextApiResponse) {
 
   const toMails = []
   toMails.push(req.body.email)
-  toMails.push('m.ryousuke0401@gmail.com')
+  toMails.push('fukuoka.creators@gmail.com')
 
   const mailOption = {
     from: FROM_MAIL_ADDRESS,
