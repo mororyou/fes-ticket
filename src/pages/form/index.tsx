@@ -87,7 +87,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       <div className="curved">
         <h1 className="text-center text-lg font-bold leading-6 text-white md:text-lg">
           【稼ぐ力をサポート！】ITお悩み相談
-          <br className="block md:hidden" />
+          <br />
           by福岡クリエイターズ
           <br />
           予約フォーム
