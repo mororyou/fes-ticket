@@ -10,7 +10,7 @@ import {
   Group,
   Paper,
   Textarea,
-  TextInput as TextField,
+  TextInput,
 } from '@mantine/core'
 import { GetStaticProps } from 'next'
 import { FC, useEffect, useState } from 'react'
@@ -84,10 +84,15 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       className="mx-auto max-w-[600px] lg:w-2/5"
     >
       {isLoading && <LoadingComponent />}
-      <h1 className="mb-6 text-center text-base font-bold leading-9 text-gray-700 lg:text-lg">
-        {booth.name} <br />
-        予約フォーム
-      </h1>
+      <div className="curved">
+        <h1 className="text-center text-lg font-bold leading-6 text-white md:text-lg">
+          【稼ぐ力をサポート！】ITお悩み相談
+          <br className="block md:hidden" />
+          by福岡クリエイターズ
+          <br />
+          予約フォーム
+        </h1>
+      </div>
       <p className="rounded-md border border-gray-200 bg-white p-2 text-sm leading-6 text-gray-700">
         ※フォーム送信後、後日「予約確定メール」をお送りします。そちらのメールをもって予約確定となりますので、必ずご確認をお願いします。
         <br />
@@ -96,7 +101,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
       <Divider className="my-5" />
       <div className="grid grid-cols-12 gap-y-6">
         <div className="col-span-12">
-          <TextField
+          <TextInput
             className="text-base"
             label={
               <label className="mb-2 flex items-center">
@@ -104,29 +109,31 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
                 <RequireBadge />
               </label>
             }
-            styles={{ input: { fontSize: '16px' } }}
+            variant="filled"
+            styles={{ input: { fontSize: '16px', backgroundColor: '#F7F7F7' } }}
             onChange={(e) => {
               setName(e.target.value)
             }}
           />
         </div>
         <div className="col-span-12">
-          <TextField
+          <TextInput
             label={
               <label className="mb-2 flex items-center">
                 リベシティプロフィールURL
                 <ArbitraryBadge />
               </label>
             }
+            variant="filled"
             type="text"
-            styles={{ input: { fontSize: '16px' } }}
+            styles={{ input: { fontSize: '16px', backgroundColor: '#F7F7F7' } }}
             onChange={(e) => {
               setUrl(e.target.value)
             }}
           />
         </div>
         <div className="col-span-12">
-          <TextField
+          <TextInput
             label={
               <label className="mb-2 flex items-center">
                 メールアドレス
@@ -134,7 +141,8 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
               </label>
             }
             type="email"
-            styles={{ input: { fontSize: '16px' } }}
+            variant="filled"
+            styles={{ input: { fontSize: '16px', backgroundColor: '#F7F7F7' } }}
             onChange={(e) => {
               setEmail(e.target.value)
             }}
@@ -166,7 +174,8 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           </Checkbox.Group>
         </div>
 
-        <Divider my="sm" className="col-span-12" size={'sm'} />
+        <Divider className="col-span-full my-5" />
+
         <div className="col-span-12">
           <Checkbox.Group
             label={
@@ -197,8 +206,17 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
                 <ArbitraryBadge />
               </label>
             }
+            variant="filled"
             minRows={4}
-            styles={{ input: { fontSize: '16px' } }}
+            styles={{
+              input: {
+                fontSize: '16px',
+                backgroundColor: '#F7F7F7',
+                '::placeholder': {
+                  color: '#AAA',
+                },
+              },
+            }}
             placeholder="例：自社のWEBサイトを改善したいけど方法がわからない / エンジニアになるための勉強法を教えてほしい / リベシティのアプリの使い方がわからない"
             value={content}
             onChange={(e) => {
@@ -215,8 +233,17 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
                 <ArbitraryBadge />
               </label>
             }
+            variant="filled"
             minRows={4}
-            styles={{ input: { fontSize: '16px' } }}
+            styles={{
+              input: {
+                fontSize: '16px',
+                backgroundColor: '#F7F7F7',
+                '::placeholder': {
+                  color: '#AAA',
+                },
+              },
+            }}
             placeholder="ご要望や希望時間がある方は、こちらにご入力ください"
             value={etc}
             onChange={(e) => {
@@ -225,14 +252,15 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
           />
         </div>
       </div>
-      <div className="my-12 flex justify-center md:justify-start">
+      <div className="my-12 flex justify-center md:justify-center">
         <Button
           radius={'xs'}
+          className="h-20 w-[290px] bg-[#D21577] text-lg font-bold text-white hover:bg-[#D21577] hover:bg-opacity-70"
           onClick={(e) => {
             e.preventDefault()
             submitHandler()
           }}
-          disabled={disable}
+          // disabled={disable}
         >
           送信
         </Button>
@@ -244,7 +272,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
 export default Form
 
 const RequireBadge = () => (
-  <span className="rounded-xs ml-2 border border-red-500 px-2 py-1 text-xs text-red-500 ">
+  <span className="rounded-xs ml-2 border border-[#D21577] px-2 py-1 text-xs text-[#D21577] ">
     必須
   </span>
 )
