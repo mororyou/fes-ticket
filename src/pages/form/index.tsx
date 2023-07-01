@@ -260,7 +260,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
             e.preventDefault()
             submitHandler()
           }}
-          // disabled={disable}
+          disabled={disable}
         >
           送信
         </Button>
