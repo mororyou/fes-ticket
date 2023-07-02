@@ -104,6 +104,7 @@ const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
             className="h-16 w-[290px] bg-[#D21577] text-lg font-bold text-white hover:bg-[#D21577] hover:bg-opacity-70"
             onClick={(e) => {
               e.preventDefault()
+              chancelEventHandler()
             }}
           >
             お申し込みをキャンセルする
