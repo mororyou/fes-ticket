@@ -4,6 +4,7 @@ import { getBooth } from '@/fetch/booth'
 import { Apply, Booth } from '@/types/types'
 import { Button, Divider, Paper } from '@mantine/core'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
@@ -57,102 +58,59 @@ const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
   }
 
   return (
-    <Paper
-      shadow={'sm'}
-      p="md"
-      m={'md'}
-      className="mx-auto max-w-[600px] lg:w-2/5"
-    >
-      <p className="text-sm font-semibold">
-        以下の内容で申し込みが完了しました。
-      </p>
-      <Divider className="my-4" />
-      <div className="grid grid-cols-1 gap-y-3 md:gap-y-5">
-        <dl className="flex flex-col">
-          {/* Name */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">
-            お名前（リベシティ名）
-          </dt>
-          <dd className="mb-6 px-2 text-sm text-gray-700">{apply.name}</dd>
-
-          {/* Url */}
-          {apply.url && (
-            <>
-              <dt className="mb-2 text-sm font-semibold text-gray-700">
-                リベシティプロフィールURL
-              </dt>
-              <dd className="mb-6 px-2 text-sm text-gray-700">
-                <a
-                  href={apply.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-500"
-                >
-                  {apply.url}
-                </a>
-              </dd>
-            </>
-          )}
-
-          {/* Mail */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">
-            メールアドレス
-          </dt>
-          <dd className="mb-6 px-2 text-sm text-gray-700">{apply.email}</dd>
-
-          {/* Dates */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">
-            希望日時（複数選択可能）
-          </dt>
-          <dd className="mb-6 grid grid-cols-3 gap-y-4 px-2 text-gray-700">
-            {dates?.map((date: any, index: number) => {
-              return (
-                <span key={index} className="text-sm text-gray-700">
-                  {date.label}
-                </span>
-              )
-            })}
-          </dd>
-
-          {/* Dates */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">
-            相談カテゴリ（複数選択可能）
-          </dt>
-          <dd className="mb-6 grid grid-cols-3 gap-y-4 px-2 text-gray-700">
-            {categories?.map((category: any, index: number) => {
-              return (
-                <span key={index} className="text-sm text-gray-700">
-                  {category.label}
-                </span>
-              )
-            })}
-          </dd>
-
-          {/* Mail */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">
-            相談内容（具体的にお願いします）
-          </dt>
-          <dd className="mb-6 px-2 text-sm text-gray-700">{apply.content}</dd>
-
-          {/* Mail */}
-          <dt className="mb-2 text-sm font-semibold text-gray-700">その他</dt>
-          <dd className="mb-6 px-2 text-sm text-gray-700">{apply.etc}</dd>
-        </dl>
+    <div className="mx-auto flex max-w-[600px] flex-col lg:w-2/5">
+      <div className="curved">
+        <h1 className="text-center text-lg font-bold leading-6 text-white md:text-lg">
+          【稼ぐ力をサポート！】ITお悩み相談
+          <br />
+          by福岡クリエイターズ
+          <br />
+          <span className="mt-1 text-xl">予約フォーム</span>
+        </h1>
       </div>
-      <div className="my-12 flex justify-center md:justify-start">
-        <Button
-          size="sm"
-          color={'red'}
-          radius={'xs'}
-          onClick={(e) => {
-            e.preventDefault()
-            chancelEventHandler()
-          }}
-        >
-          キャンセル
-        </Button>
-      </div>
-    </Paper>
+      <Paper p="md" className="mx-6">
+        <p className="mb-8 text-sm leading-6">
+          この度は、【ITお悩み相談】へお申し込みいただき誠にありがとうございます。
+          <br />
+          受付完了の自動返信メールを送信いたしましたので、ご確認をお願いいたします。
+          <br />
+          現在、予約状況の確認を行っております。予約が確定次第、【予約確定メール】をお送りいたしますのでお待ちいただきますようお願い申し上げます。
+        </p>
+        <p className="mb-2 text-base font-semibold text-gray-800">
+          ＜自動返信メールが届かない場合＞
+        </p>
+        <p className="mb-8 text-sm leading-6">
+          入力いただいたメールアドレスに誤りがあるか、迷惑メールフォルダに振り分けられている可能性がございます。
+          <br />
+          もしドメイン指定をされている場合は、fukuoka.creators@gmail.comからのメールが受信できるようあらかじめ設定をお願いいたします。
+        </p>
+        <p className="mb-2 text-base font-semibold text-gray-800">
+          ＜予約内容の変更をしたい場合＞
+        </p>
+        <p className="mb-8 text-sm leading-6">
+          以下の「お申し込みをキャンセルする」ボタンよりキャンセルの上、再度お手続きをお願いいたします。
+          <br />
+          何かご不明点がお問い合わせがございましたら、お気軽にfukuoka.creators@gmail.comまでご連絡ください。
+        </p>
+        <div className="my-12 flex flex-col items-center justify-center md:justify-center">
+          <Link
+            href={'/form'}
+            className="mb-16 flex h-16 w-[290px] items-center justify-center bg-blue-500 text-lg font-bold text-white hover:bg-blue-500 hover:bg-opacity-70"
+          >
+            ホームに戻る
+          </Link>
+          <Button
+            radius={'xs'}
+            className="h-16 w-[290px] bg-[#D21577] text-lg font-bold text-white hover:bg-[#D21577] hover:bg-opacity-70"
+            onClick={(e) => {
+              e.preventDefault()
+            }}
+          >
+            お申し込みをキャンセルする
+          </Button>
+        </div>
+      </Paper>
+    </div>
   )
 }
 
