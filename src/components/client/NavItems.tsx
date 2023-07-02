@@ -17,7 +17,7 @@ export const NavItems: NaviItem[] = [
   },
   {
     pageId: 'receptions',
-    title: '受付一覧',
+    title: '申込一覧',
     color: 'blue',
     icon: <IconListNumbers size={16} />,
   },

@@ -1,5 +1,5 @@
 import Title from '@/components/common/Title'
-import { DATES } from '@/constant/const'
+import { DATES, MULTISELECT_ITEMS, SELECTER_DAYS } from '@/constant/const'
 import { useAuthContext } from '@/context/AuthContext'
 import { getApplies } from '@/fetch/apply'
 import ClientLayout from '@/layout/client'
@@ -11,8 +11,6 @@ import { FC, useEffect, useState } from 'react'
 
 const Receptions = () => {
   const [date, setDate] = useState('2023-07-15')
-  const [opened, setOpened] = useState(false)
-
   const [receptions, setReceptions] = useState<Apply[]>([])
   const { currentUser } = useAuthContext()
 
@@ -27,27 +25,29 @@ const Receptions = () => {
   }, [date, currentUser])
 
   return (
-    <ClientLayout title="受付一覧">
-      <Title title="受付一覧" icon={<IconListNumbers className="mr-2" />} />
+    <ClientLayout title="申込一覧">
+      <Title title="申込一覧" icon={<IconListNumbers className="mr-2" />} />
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
           <Paper shadow="xs" p="md">
-            <SegmentedControl
+            {/* <SegmentedControl
               data={DATES}
               value={date}
               onChange={setDate}
               className="mb-8"
-            />
+            /> */}
             <ReceptionGridHead />
             {receptions &&
               receptions.map((reception: Apply, index: number) => {
                 return (
                   <ReceptionGridRow
                     key={index}
-                    uid={reception.uuid}
-                    seq={reception.seq}
+                    dates={reception.dates as []}
                     user={reception.name}
                     url={reception.url}
+                    categories={reception.categories as []}
+                    content={reception.content}
+                    etc={reception.etc}
                   />
                 )
               })}
@@ -62,60 +62,84 @@ export default Receptions
 
 const ReceptionGridHead = () => (
   <>
-    <div className="grid grid-cols-12 gap-x-4">
-      <div className="col-span-1 text-center text-sm font-semibold">No.</div>
-      <div className="col-span-2 text-sm font-semibold">予約時間</div>
-      <div className="col-span-2 text-sm font-semibold">ユーザー名</div>
-      <div className="col-span-4 text-sm font-semibold">対応(予定)者</div>
-      <div className="col-span-1 text-center text-sm font-semibold">
-        ステータス
+    <div className="grid grid-cols-12 items-center gap-x-4">
+      <div className="font-nomal col-span-2 text-sm font-semibold">
+        予約希望時間帯
       </div>
-      <div className="col-span-2 text-sm font-semibold"></div>
+      <div className="font-nomal col-span-2 text-sm font-semibold">
+        ユーザー名
+      </div>
+      <div className="font-nomal col-span-2 text-sm font-semibold">
+        相談カテゴリ
+      </div>
+      <div className="font-nomal col-span-6 text-sm font-semibold">
+        <p>相談内容</p>
+        <p className="text-xs">詳細</p>
+      </div>
     </div>
     <Divider my="sm" />
   </>
 )
 
 type ReceptionGridRowProps = {
-  seq: number
-  uid: string
+  dates: [] | null
   user: string
   url?: string | null
+  categories: [] | null
+  content: string | null
+  etc: string | null
 }
 
 const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
-  seq,
-  uid,
+  dates,
   user,
   url,
-}) => (
-  <>
-    <div className="grid grid-cols-12 items-center gap-x-4">
-      <div className="col-span-1 text-center">{seq}</div>
-      <div className="col-span-2">
-        {user}
-        {url ? (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-4 text-blue-500 underline"
-          >
-            [profile]
-          </a>
-        ) : (
-          '[リベ外ユーザー]'
-        )}
+  categories,
+  content,
+  etc,
+}) => {
+  return (
+    <>
+      <div className="grid grid-cols-12 items-center gap-x-4">
+        <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
+          {dates?.map((dateKey: never) => {
+            const date = SELECTER_DAYS.filter((days) => days.value === dateKey)
+            return (
+              <div key={dateKey} className="text-xs font-medium">
+                {date[0].label}
+                <span className="px-1 text-gray-500">|</span>
+              </div>
+            )
+          })}
+        </div>
+        <div className="font-nomal col-span-2 text-sm">
+          {url ? (
+            <a href={url} className="text-sm text-blue-500">
+              {user}
+            </a>
+          ) : (
+            <span className="text-sm">{user}</span>
+          )}
+        </div>
+        <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
+          {categories?.map((categoryKey: never) => {
+            const category = MULTISELECT_ITEMS.filter(
+              (category) => category.value === categoryKey
+            )
+            return (
+              <div key={categoryKey} className="text-xs font-medium">
+                {category[0].label}
+                <span className="px-1 text-gray-500">|</span>
+              </div>
+            )
+          })}
+        </div>
+        <div className="font-nomal col-span-6 text-sm">
+          <p className="text-xs">{content}</p>
+          <p className="mt-1 text-xs font-light text-gray-500">{etc}</p>
+        </div>
       </div>
-      <div className="col-span-4 text-sm">対応者</div>
-      <div className="col-span-1 text-center text-sm">ステータス</div>
-      <div className="col-span-2 text-center">
-        <Button size="xs" radius={'xs'} color="green">
-          <Link href={`/client/receptions/${uid}`} className="text-sm">
-            詳細画面
-          </Link>
-        </Button>
-      </div>
-    </div>
-  </>
-)
+      <Divider my="sm" />
+    </>
+  )
+}

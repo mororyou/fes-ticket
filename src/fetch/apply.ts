@@ -33,7 +33,7 @@ export const getApplies = async (boothId: string, date: string) => {
   const { data, error } = await supabase
     .from('applies')
     .select('*')
-    .eq('booth', boothId)
+    .neq('status', 99)
 
   if (error) throw new Error(error.message)
 

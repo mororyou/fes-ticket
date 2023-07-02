@@ -520,3 +520,21 @@ Ensure the default browser behavior of the `hidden` attribute.
     width: 0.2em;
   }
 }
+
+.curved {
+  position: relative;
+  background: #D21577;
+  height: auto;
+  @apply mb-3 flex w-full items-center justify-center pt-6 pb-8;
+}
+
+.curved::after {
+  content: '';
+  border-top-left-radius: 50% 100%;
+  border-top-right-radius: 50% 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  height: 10%;
+}
