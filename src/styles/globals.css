@@ -525,7 +525,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
   background: #D21577;
   height: auto;
-  @apply mb-8 flex w-full items-center justify-center pt-6 pb-8;
+  @apply mb-3 flex w-full items-center justify-center pt-6 pb-8;
 }
 
 .curved::after {
