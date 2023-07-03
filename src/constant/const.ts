@@ -99,6 +99,7 @@ export const MULTISELECT_ITEMS = [
 export const FORM_REQUIRE_ITEMS = ['checkbox', 'radio', 'select', 'multi']
 
 export const RESOUCE_MAPS = [
+  { resourceId: 0, resourceTitle: '当日担当' },
   { resourceId: 1, resourceTitle: 'ブース１' },
   { resourceId: 2, resourceTitle: 'ブース２' },
 ]

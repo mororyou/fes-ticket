@@ -44,27 +44,18 @@ const Schedules = () => {
   const queryClient = useQueryClient()
   const { data: clients } = useQueryClientSelector()
 
-  useEffect(() => {
-    const f = async () => {
-      const tmpDate = dayjs(date).format('YYYY-MM-DD')
-      const applyRes: Apply[] = await getAppliesView(tmpDate)
-      await setApplies(applyRes)
-      const scheduleRes: Schedule[] = await getSchedules(tmpDate)
-      await setScheduls(scheduleRes)
-    }
-    f()
-  }, [date])
+  const getData = async () => {
+    const tmpDate = dayjs(date).format('YYYY-MM-DD')
+    const applyRes: Apply[] = await getAppliesView(tmpDate)
+    console.log(applyRes)
+    await setApplies(applyRes)
+    const scheduleRes: Schedule[] = await getSchedules(tmpDate)
+    await setScheduls(scheduleRes)
+  }
 
   useEffect(() => {
-    const f = async () => {
-      const tmpDate = dayjs(date).format('YYYY-MM-DD')
-      const applyRes: Apply[] = await getAppliesView(tmpDate)
-      await setApplies(applyRes)
-      const scheduleRes: Schedule[] = await getSchedules(tmpDate)
-      await setScheduls(scheduleRes)
-    }
-    f()
-  }, [applies, schedules])
+    getData()
+  }, [date])
 
   // react-big-calendar custom hook function
   const startAccessor = useCallback((event: any) => new Date(event.start), [])
@@ -175,7 +166,8 @@ const Schedules = () => {
         etc: draggedEvent.etc,
         status: 2,
       })
-      setDraggedEvent(null)
+      // 非同期の微調整を！！
+      await getData()
     },
     [draggedEvent, createSchedule, updatedApply]
   )
@@ -341,9 +333,12 @@ const Schedules = () => {
             <Select data={clients as []} onChange={setDesigner} />
           </div>
         </div>
-        {event?.status === 1 && (
-          <Button type="button">スケジュール詳細登録</Button>
-        )}
+        <div className="flex w-full justify-between">
+          {event?.status === 1 && (
+            <Button type="button">スケジュール詳細登録</Button>
+          )}
+          <Button color="grape">メール送信</Button>
+        </div>
       </Modal>
     </ClientLayout>
   )
