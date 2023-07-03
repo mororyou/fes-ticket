@@ -64,13 +64,26 @@ export const getApplies = async (boothId: string, date: string) => {
   return data
 }
 
-export const updateStatusApplies = async (applyId: string, status: number) => {
+export const getCancelApplies = async () => {
   const { data, error } = await supabase
     .from('applies')
-    .update({ status: status })
-    .eq('uuid', applyId)
+    .select('*')
+    .eq('status', 99)
 
   if (error) throw new Error(error.message)
 
   return data
 }
+
+export const updateStatusApplies = async (applyId: string, status: number) => {
+  const { data, error } = await supabase
+    .from('applies')
+    .update({ status: status })
+    .eq('id', applyId)
+
+  if (error) throw new Error(error.message)
+
+  console.log('updated status')
+  return data
+}
+
