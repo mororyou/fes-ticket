@@ -76,7 +76,7 @@ export const ReceptionBody = (body: any) => {
     fontSize: '14px',
     fontWeight: 700,
     padding: '16px 64px',
-    backgroundColor: 'tomato',
+    backgroundColor: '#D21577',
     color: '#fff',
     borderRadius: '4px',
     margin: '0 0 24px',
@@ -94,30 +94,25 @@ export const ReceptionBody = (body: any) => {
         <tbody style={wrapInner}>
           <tr style={row}>
             <td>
+              <p style={itemDescription}>
+                この度は、【ITお悩み相談】へお申し込みいただき誠にありがとうございます。
+                <br />
+                以下の内容でご予約を承りましたのでご確認ください。
+                <br />
+                ※本メールは自動送信される確認メールです。ご返信は不要です。
+                <br />
+                予約が確定次第、【予約確定メール】をお送りいたしますので、しばらくお待ちいただきますようお願い申し上げます。
+              </p>
               <p>
-                ********************************************************************
-                <br />
-                <span style={thanks}>お申し込みありがとうございます。</span>
-                <br />
-                <span style={bold}>下記の内容にて受付が完了しました。</span>
-                <br />
-                ※本メールは予約された方への自動返信メールです。
-                <br />
-                数日以内に追ってご連絡いたしますので少々お待ちください。
-                <br />
-                ********************************************************************
+                *****************************************************************
                 <br />
               </p>
-
               <p style={itemLabel}>お名前（リベシティ名）</p>
               <p style={itemDescription}>{body.name}</p>
-
               <p style={itemLabel}>リベシティプロフィールURL</p>
               <p style={itemDescription}>{body.url}</p>
-
               <p style={itemLabel}>メールアドレス</p>
               <p style={itemDescription}>{body.email}</p>
-
               <p style={itemLabel}>希望日時（複数選択可能）</p>
               <p style={itemDescription}>
                 {dateObj.map((date: any, index: number) => (
@@ -126,7 +121,6 @@ export const ReceptionBody = (body: any) => {
                   </span>
                 ))}
               </p>
-
               <p style={itemLabel}>相談カテゴリ（複数選択可能）</p>
               <p style={itemDescription}>
                 {categoryObj.map((category: any, index: number) => (
@@ -135,25 +129,35 @@ export const ReceptionBody = (body: any) => {
                   </span>
                 ))}
               </p>
-
               <p style={itemLabel}>相談内容（具体的にお願いします）</p>
               <p style={itemDescription}>
                 {body.content ? body.content : '特になし'}
               </p>
-
               <p style={itemLabel}>その他</p>
               <p style={itemDescription}>{body.etc ? body.etc : '特になし'}</p>
-
-              {body.url && (
-                <a
-                  href="https://libecity.com/room_list?room_id=DlVCa6dA8OyfHR9lDknV"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={linkBtn}
-                >
-                  ブースのチャットはこちら
-                </a>
-              )}
+              <br />
+              <p>
+                *****************************************************************
+                <br />
+              </p>
+              <p style={itemLabel}>
+                ■ITお悩み相談by福岡クリエイターズのWebサイトはこちら！
+              </p>
+              　
+              <a
+                href={`https://fukuoka-creators.studio.site/`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://fukuoka-creators.studio.site/
+              </a>
+              <p style={itemLabel}>＜予約内容の変更をしたい場合＞</p>
+              <p>
+                以下の「お申し込みをキャンセルする」ボタンよりキャンセルの上、再度お手続きをお願いいたします。
+              </p>
+              <br />
+              <br />
+              <br />
               <br />
               <a
                 href={`${process.env.NEXT_PUBLIC_DOMAIN}apply/complete/${body.uuid}`}
@@ -163,22 +167,6 @@ export const ReceptionBody = (body: any) => {
               >
                 キャンセルの申し込みはこちら
               </a>
-
-              <p>
-                ********************************************************************
-              </p>
-              <p style={itemLabel}>【注意事項】</p>
-              <p style={itemDescription}>
-                ・数日以内に「予約確定メール」をお送りします。
-                <br />
-                　そちらのメールをもって予約確定となりますので必ずご確認をお願いします。
-                <br />
-                ・すでに予約枠が埋まっている場合は、改めてご連絡いたします。
-                <br />
-              </p>
-              <p>
-                ********************************************************************
-              </p>
             </td>
           </tr>
         </tbody>

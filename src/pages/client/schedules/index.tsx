@@ -6,10 +6,9 @@ import { useQueryClient } from 'react-query'
 import { useScheduleMutate } from '@/hooks/schedule/useMutate'
 import { useApplyMutate } from '@/hooks/apply/useMutate'
 import { useQuerySchedules } from '@/hooks/schedule/useQuerySchedules'
-import { useQueryApplies } from '@/hooks/apply/useQueryApplies'
 import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
 import { Apply, Schedule, Client } from '@/types/types'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Button, Modal, Paper, Select } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -22,16 +21,20 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 const DnDCalendar = withDragAndDrop(Calendar)
 
 import dayjs from 'dayjs'
-// import timezone from 'dayjs/plugin/timezone'
-// dayjs.extend(timezone)
-// dayjs.tz.setDefault('Asia/Tokyo')
+import { supabase } from '@/libs/supabase'
+import { getSchedules } from '@/fetch/schedule'
+import { getAppliesView } from '@/fetch/apply'
 const localizer = dayjsLocalizer(dayjs)
 
 const Schedules = () => {
   const [date, setDate] = useState(new Date(2023, 6, 15))
+  const [view, setView] = useState('view_applies_filter_1day')
+  const [applies, setApplies] = useState<Apply[]>([])
+  const [schedules, setScheduls] = useState<Schedule[]>([])
   const [draggedEvent, setDraggedEvent] = useState<any>(null)
   const [opend, { open, close }] = useDisclosure(false)
   const [event, setEvent] = useState<any>(null)
+  const [filterApply, setFilterApply] = useState<[]>()
   const [engineer, setEnginner] = useState<string | null>('')
   const [designer, setDesigner] = useState<string | null>('')
 
@@ -39,11 +42,18 @@ const Schedules = () => {
   const { updatedApply } = useApplyMutate()
 
   const queryClient = useQueryClient()
-  const { data: schedules, refetch: refetchSchedule } = useQuerySchedules()
-  const { data: applies, refetch: refetchApply } = useQueryApplies(
-    dayjs(date).format('YYYY-MM-DD')
-  )
   const { data: clients } = useQueryClientSelector()
+
+  useEffect(() => {
+    const f = async () => {
+      const tmpDate = dayjs(date).format('YYYY-MM-DD')
+      const applyRes: Apply[] = await getAppliesView(tmpDate)
+      await setApplies(applyRes)
+      const scheduleRes: Schedule[] = await getSchedules(tmpDate)
+      await setScheduls(scheduleRes)
+    }
+    f()
+  }, [date, applies, schedules])
 
   // react-big-calendar custom hook function
   const startAccessor = useCallback((event: any) => new Date(event.start), [])
@@ -81,9 +91,26 @@ const Schedules = () => {
         )
       }
       // Schedule Update 処理
-      // updatedSchedule()
+      await updatedSchedule.mutate({
+        id: dropData.id,
+        title: dropData.title,
+        user: dropData.user,
+        date: dayjs(dropData.date).format('YYYY-MM-DD'),
+        start: dayjs(dropData.start).format('YYYY-MM-DD HH:mm'),
+        end: dayjs(dropData.end).format('YYYY-MM-DD HH:mm'),
+        resourceId: dropData.resourceId,
+        url: dropData.url,
+        email: dropData.email,
+        contents: dropData.contents,
+        designer: dropData.designer,
+        categories: dropData.categories,
+        content: dropData.content,
+        etc: dropData.etc,
+        status: dropData.status,
+        engineer: dropData.engineer,
+      })
     },
-    [queryClient]
+    [queryClient, updatedSchedule]
   )
   const eventPropGetter = useCallback(
     (event: any) => ({
@@ -107,6 +134,7 @@ const Schedules = () => {
         setDraggedEvent(null)
         return
       }
+      // スケジュール登録
       await createSchedule.mutate({
         title: draggedEvent.name,
         user: draggedEvent.name,
@@ -115,11 +143,16 @@ const Schedules = () => {
         end: dayjs(event.end).format('YYYY-MM-DD HH:mm'),
         resourceId: event.resource,
         email: draggedEvent.email,
-        url: `/client/receptions/${draggedEvent.uuid}`,
+        url: `${draggedEvent.url}`,
         contents: draggedEvent?.contents,
+        categories: draggedEvent?.categories,
+        content: draggedEvent?.content,
+        etc: draggedEvent?.etc,
+        status: 1,
         engineer: '',
         designer: '',
       })
+      // 申し込み情報ステータス更新
       await updatedApply.mutate({
         id: draggedEvent.id,
         name: draggedEvent.name,
@@ -131,12 +164,9 @@ const Schedules = () => {
         etc: draggedEvent.etc,
         status: 2,
       })
-      // refetch
-      await refetchSchedule()
-      await refetchApply()
       setDraggedEvent(null)
     },
-    [draggedEvent, createSchedule, updatedApply, refetchSchedule, refetchApply]
+    [draggedEvent, createSchedule, updatedApply]
   )
   //
   const onDragStart = useCallback((event: any) => setDraggedEvent(event), [])
@@ -174,63 +204,91 @@ const Schedules = () => {
       />
 
       <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12">
-          <div className="grid grid-cols-1 gap-y-4">
-            <Paper p="md" shadow="xs" className="row-span-1 max-h-[50vh]">
-              <DnDCalendar
-                defaultView={Views.DAY}
-                views={['day']}
-                formats={formats}
-                messages={messages}
-                defaultDate={defaultDate}
-                events={schedules}
-                localizer={localizer}
-                resources={RESOUCE_MAPS}
-                showMultiDayTimes={true}
-                step={30}
-                min={new Date(2023, 7, 15, 9, 0)}
-                max={new Date(2023, 7, 17, 21, 0)}
-                eventPropGetter={eventPropGetter}
-                startAccessor={startAccessor}
-                endAccessor={endAccessor}
-                resourceIdAccessor={resourceIdAccessor}
-                resourceTitleAccessor={resourceTitleAccessor}
-                onNavigate={onNavigate}
-                onDropFromOutside={onDropFromOutside}
-                onDragOver={onDragOver}
-                onDoubleClickEvent={onDoubleClickEvent}
-                onEventDrop={onEventDrop}
-                onEventResize={onResizeEvent}
-                resizable
-                selectable
-              />
-            </Paper>
-            <div className="row-span-1 max-h-[25vh] overflow-y-scroll">
-              <h3 className="col-span-1 mb-8 border-b border-b-gray-400 p-2 text-base font-semibold text-gray-700">
-                申込者一覧
-              </h3>
-              <div className="grid grid-cols-4 gap-4 px-2">
-                {applies &&
-                  applies.map((apply: Apply) => (
-                    <ApplyItem
-                      apply={apply}
-                      onDragStart={onDragStart}
-                      key={apply.id}
-                    />
-                  ))}
-              </div>
-            </div>
+        {/* Left Column */}
+        <Paper
+          p="md"
+          radius="sm"
+          shadow="xs"
+          className="col-span-8 max-h-[75vh]"
+        >
+          <DnDCalendar
+            defaultView={Views.DAY}
+            views={['day']}
+            formats={formats}
+            messages={messages}
+            defaultDate={defaultDate}
+            events={schedules}
+            localizer={localizer}
+            resources={RESOUCE_MAPS}
+            showMultiDayTimes={true}
+            step={30}
+            min={new Date(2023, 7, 15, 9, 0)}
+            max={new Date(2023, 7, 17, 21, 0)}
+            eventPropGetter={eventPropGetter}
+            startAccessor={startAccessor}
+            endAccessor={endAccessor}
+            resourceIdAccessor={resourceIdAccessor}
+            resourceTitleAccessor={resourceTitleAccessor}
+            onNavigate={onNavigate}
+            onDropFromOutside={onDropFromOutside}
+            onDragOver={onDragOver}
+            onDoubleClickEvent={onDoubleClickEvent}
+            onEventDrop={onEventDrop}
+            onEventResize={onResizeEvent}
+            resizable={false}
+            selectable
+          />
+        </Paper>
+
+        {/* Right Column */}
+        <Paper
+          p="md"
+          radius="sm"
+          shadow="xs"
+          className="col-span-4 max-h-[75vh] overflow-y-scroll bg-gray-100"
+        >
+          <h3 className="col-span-1 mb-8 border-b border-b-gray-400 p-2 text-base font-semibold text-gray-700">
+            申込者一覧
+          </h3>
+          <div className="grid grid-cols-1 gap-4 px-2">
+            {applies &&
+              applies.map((apply: Apply) => (
+                <ApplyItem
+                  apply={apply}
+                  onDragStart={onDragStart}
+                  key={apply.id}
+                />
+              ))}
           </div>
-        </div>
+        </Paper>
       </div>
-      <Modal opened={opend} onClose={close} title="詳細" size="lg">
-        <div className="mb-8 grid grid-cols-12 gap-x-8 gap-y-4">
+      {/* Modal */}
+      <Modal opened={opend} onClose={close} title="詳細登録" size="lg">
+        <div className="mb-8 grid grid-cols-12 items-center gap-x-8 gap-y-6">
+          {/* 名前 */}
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            名前
+          </label>
+          <div className="col-span-8 text-xs text-gray-700">{event?.user}</div>
+          {/* 名前 */}
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            プロフィールURL
+          </label>
+          <div className="col-span-8 text-xs text-gray-700">
+            {event?.url ? (
+              <a href={event.url}>リベプロフィールリンク</a>
+            ) : (
+              'リベシティ外ユーザーもしくはプロフィールURL未登録'
+            )}
+          </div>
+          {/* 日付 */}
           <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
             日付
           </label>
           <div className="col-span-8 my-auto text-sm text-gray-700">
             {dayjs(event?.start).format(' YYYY/MM/DD')}
           </div>
+          {/* 時間 */}
           <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
             時間
           </label>
@@ -238,12 +296,33 @@ const Schedules = () => {
             {dayjs(event?.start).format('HH:mm')} -{' '}
             {dayjs(event?.end).format('HH:mm')}
           </div>
+
+          {/*  */}
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            相談カテゴリ
+          </label>
+          <div className="col-span-8 text-xs text-gray-700"></div>
+
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            相談内容
+          </label>
+          <div className="col-span-8 text-xs text-gray-700">
+            {event?.content}
+          </div>
+
+          <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
+            その他
+          </label>
+          <div className="col-span-8 text-xs text-gray-700">{event?.etc}</div>
+
+          {/* 担当者 - enginner */}
           <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
             担当者
           </label>
           <div className="col-span-8 my-auto text-sm text-gray-700">
             <Select data={clients as []} onChange={setEnginner} />
           </div>
+          {/* 担当者 - designer */}
           <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
             担当者
           </label>
@@ -251,7 +330,9 @@ const Schedules = () => {
             <Select data={clients as []} onChange={setDesigner} />
           </div>
         </div>
-        <Button type="button">スケジュール詳細登録</Button>
+        {event?.status === 1 && (
+          <Button type="button">スケジュール詳細登録</Button>
+        )}
       </Modal>
     </ClientLayout>
   )

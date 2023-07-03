@@ -12,6 +12,30 @@ export const getApply = async (uuid: string) => {
   return data
 }
 
+export const getAppliesView = async (date: string) => {
+  let view = ''
+  switch (date) {
+    case '2023-07-15':
+      view = 'view_applies_filter_1day'
+      break
+    case '2023-07-16':
+      view = 'view_applies_filter_2day'
+      break
+    case '2023-07-17':
+      view = 'view_applies_filter_3day'
+      break
+    default:
+      view = 'view_applies_filter_1day'
+      break
+  }
+  const { data, error } = await supabase.from(view)
+
+  if (error) throw new Error(error.message)
+
+  return data
+}
+
+
 export const getNextSeq = async (boothId: string) => {
   const { data, error } = await supabase
     .from('applies')

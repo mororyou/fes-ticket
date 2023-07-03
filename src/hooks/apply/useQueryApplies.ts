@@ -2,13 +2,9 @@ import { supabase } from '@/libs/supabase'
 import { Apply } from '@/types/types'
 import { useQuery } from 'react-query'
 
-export const useQueryApplies = (date: string) => {
+export const useQueryApplies = (view: string) => {
   const getApplies = async () => {
-    const { data, error } = await supabase
-      .from('applies')
-      .select('*')
-      .eq('status', 1)
-      .order('created_at', { ascending: false })
+    const { data, error } = await supabase.from(view)
 
     if (error) throw new Error(error.message)
 

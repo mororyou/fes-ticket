@@ -44,7 +44,6 @@ export const useScheduleMutate = () => {
     },
     {
       onSuccess: (data: any) => {
-        console.log(data)
         reset()
       },
       onError: (err: any) => {

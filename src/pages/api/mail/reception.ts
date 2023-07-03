@@ -130,7 +130,7 @@ export default function reception(req: NextApiRequest, res: NextApiResponse) {
   const mailOption = {
     from: FROM_MAIL_ADDRESS,
     to: toMails,
-    subject: `【ITお悩み相談by福岡クリエイターズ】受付が完了しました。`,
+    subject: `【ITお悩み相談by福岡クリエイターズ】お申込み受付完了のお知らせ`,
     text: req.body.name + ' | Sent from: ' + req.body.email,
     html: message,
   }

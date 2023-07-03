@@ -130,6 +130,10 @@ export type Schedule = {
   contents: Object | null
   designer: string
   engineer: string
+  categories: Object | null
+  content: string | null
+  etc: string | null
+  status: number
   created_at: string
 }
 
@@ -145,5 +149,9 @@ export type EditedSchedule = {
   email: string
   contents: Object | null
   designer: string
+  categories: Object | null
+  content: string | null
+  etc: string | null
+  status: number
   engineer: string
 }
