@@ -48,5 +48,9 @@ export const ScheduleState = {
   contents: null,
   designer: '',
   engineer: '',
+  categories: null,
+  content: '',
+  etc: '',
+  status: 0,
   created_at: '',
 }

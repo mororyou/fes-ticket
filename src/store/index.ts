@@ -113,6 +113,10 @@ const useStore = create<State>((set) => ({
         contents: payload.contents,
         designer: payload.designer,
         engineer: payload.engineer,
+        categories: payload.categories,
+        content: payload.content,
+        etc: payload.etc,
+        status: payload.status,
       },
     }),
   resetEditedSchedule: () =>
