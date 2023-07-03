@@ -53,7 +53,18 @@ const Schedules = () => {
       await setScheduls(scheduleRes)
     }
     f()
-  }, [date, applies, schedules])
+  }, [date])
+
+  useEffect(() => {
+    const f = async () => {
+      const tmpDate = dayjs(date).format('YYYY-MM-DD')
+      const applyRes: Apply[] = await getAppliesView(tmpDate)
+      await setApplies(applyRes)
+      const scheduleRes: Schedule[] = await getSchedules(tmpDate)
+      await setScheduls(scheduleRes)
+    }
+    f()
+  }, [applies, schedules])
 
   // react-big-calendar custom hook function
   const startAccessor = useCallback((event: any) => new Date(event.start), [])
