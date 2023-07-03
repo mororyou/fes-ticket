@@ -320,7 +320,7 @@ export const ReceptionBody = (body: any) => {
                     {body.name}
                   </p>
                   {body.url && (
-                    <>
+                    <div>
                       <h3
                         style={{
                           marginBottom: '8px',
@@ -340,7 +340,7 @@ export const ReceptionBody = (body: any) => {
                       >
                         <a href={body.url}>{body.url}</a>
                       </p>
-                    </>
+                    </div>
                   )}
                   <h3
                     style={{
