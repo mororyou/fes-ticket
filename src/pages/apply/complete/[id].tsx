@@ -93,12 +93,14 @@ const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
           何かご不明点がお問い合わせがございましたら、お気軽にfukuoka.creators@gmail.comまでご連絡ください。
         </p>
         <div className="my-12 flex flex-col items-center justify-center md:justify-center">
-          <Link
-            href={'/form'}
+          <a
+            href={`https://fukuoka-creators.studio.site/`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mb-16 flex h-16 w-[290px] items-center justify-center bg-blue-500 text-lg font-bold text-white hover:bg-blue-500 hover:bg-opacity-70"
           >
             ホームに戻る
-          </Link>
+          </a>
           <Button
             radius={'xs'}
             className="h-16 w-[290px] bg-[#D21577] text-lg font-bold text-white hover:bg-[#D21577] hover:bg-opacity-70"
