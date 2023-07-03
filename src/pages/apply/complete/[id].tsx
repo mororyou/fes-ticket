@@ -53,7 +53,7 @@ const ApplyComplete: FC<Props> = ({ uuid, apply, booth }) => {
     if (confirm('本当にキャンセルしてもよろしいでしょうか？')) {
       await updateStatusApplies(uuid, 99)
       alert('キャンセルしました')
-      router.push(`/form`)
+      router.push(`https://fukuoka-creators.studio.site/`)
     }
   }
 

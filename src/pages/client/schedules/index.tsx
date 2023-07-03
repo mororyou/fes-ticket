@@ -132,7 +132,7 @@ const Schedules = () => {
             engineer: '',
             designer: '',
           }),
-          updateStatusApplies(draggedEvent.id, 2),
+          updateStatusApplies(draggedEvent.uuid, 2),
         ])
         await getData()
       } catch (error) {
