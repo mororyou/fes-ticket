@@ -108,7 +108,6 @@ const CancelGridRow: FC<CancelGridRowProps> = ({
         <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
           {dateObj &&
             dateObj.map((date, index) => {
-              console.log(date)
               return (
                 <div key={index} className="text-xs font-medium">
                   {date.label}

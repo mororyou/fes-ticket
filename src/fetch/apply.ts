@@ -79,9 +79,11 @@ export const updateStatusApplies = async (applyId: string, status: number) => {
   const { data, error } = await supabase
     .from('applies')
     .update({ status: status })
-    .eq('uuid', applyId)
+    .eq('id', applyId)
 
   if (error) throw new Error(error.message)
 
+  console.log('updated status')
   return data
 }
+
