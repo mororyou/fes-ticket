@@ -153,7 +153,7 @@ const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
             )
           })}
         </div>
-        <div className="font-nomal col-span-6 text-sm">
+        <div className="font-nomal col-span-4 text-sm">
           <p className="text-xs">{content}</p>
           <p className="mt-1 text-xs font-light text-gray-500">{etc}</p>
         </div>

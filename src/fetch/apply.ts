@@ -81,7 +81,7 @@ export const updateStatusApplies = async (applyId: string, status: number) => {
   const { data, error } = await supabase
     .from('applies')
     .update({ status: status })
-    .eq('id', applyId)
+    .eq('uuid', applyId)
 
   if (error) throw new Error(error.message)
 
