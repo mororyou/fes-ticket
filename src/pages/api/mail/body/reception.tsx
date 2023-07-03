@@ -89,7 +89,7 @@ export const ReceptionBody = (body: any) => {
                     }}
                   >
                     <img
-                      src="/images/logo.png"
+                      src="https://libecity-fes-ticket-git-feature-schedule-mororyou.vercel.app/images/logo.png"
                       style={{
                         width: '85%',
                         margin: 0,
