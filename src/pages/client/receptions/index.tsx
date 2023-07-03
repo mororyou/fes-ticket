@@ -6,7 +6,7 @@ import ClientLayout from '@/layout/client'
 import { Apply } from '@/types/types'
 import { Button, Divider, Paper, SegmentedControl } from '@mantine/core'
 import { IconListNumbers } from '@tabler/icons'
-import Link from 'next/link'
+import dayjs from 'dayjs'
 import { FC, useEffect, useState } from 'react'
 
 const Receptions = () => {
@@ -48,6 +48,7 @@ const Receptions = () => {
                     categories={reception.categories as []}
                     content={reception.content}
                     etc={reception.etc}
+                    created_at={reception.created_at}
                   />
                 )
               })}
@@ -64,6 +65,9 @@ const ReceptionGridHead = () => (
   <>
     <div className="grid grid-cols-12 items-center gap-x-4">
       <div className="font-nomal col-span-2 text-sm font-semibold">
+        申込日時
+      </div>
+      <div className="font-nomal col-span-2 text-sm font-semibold">
         予約希望時間帯
       </div>
       <div className="font-nomal col-span-2 text-sm font-semibold">
@@ -72,7 +76,7 @@ const ReceptionGridHead = () => (
       <div className="font-nomal col-span-2 text-sm font-semibold">
         相談カテゴリ
       </div>
-      <div className="font-nomal col-span-6 text-sm font-semibold">
+      <div className="font-nomal col-span-4 text-sm font-semibold">
         <p>相談内容</p>
         <p className="text-xs">詳細</p>
       </div>
@@ -88,6 +92,7 @@ type ReceptionGridRowProps = {
   categories: [] | null
   content: string | null
   etc: string | null
+  created_at: string
 }
 
 const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
@@ -97,16 +102,33 @@ const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
   categories,
   content,
   etc,
+  created_at,
 }) => {
+  const tmpDates = dates as []
+  const dateObj: any[] = []
+  tmpDates.map((date: string) => {
+    const res = SELECTER_DAYS.filter((rec) => rec.value == date)
+    dateObj.push(...res)
+  })
+
+  const tmpCategory = categories as []
+  const categoryObj: any[] = []
+  tmpCategory.map((category) => {
+    const res = MULTISELECT_ITEMS.filter((rec) => rec.value == category)
+    categoryObj.push(...res)
+  })
+
   return (
     <>
       <div className="grid grid-cols-12 items-center gap-x-4">
         <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
-          {dates?.map((dateKey: never) => {
-            const date = SELECTER_DAYS.filter((days) => days.value === dateKey)
+          {dayjs(created_at).format('YYYY/MM/DD HH:mm')}
+        </div>
+        <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
+          {dateObj?.map((date: any, index: number) => {
             return (
-              <div key={dateKey} className="text-xs font-medium">
-                {date[0].label}
+              <div key={index} className="text-xs font-medium">
+                {date.label}
                 <span className="px-1 text-gray-500">|</span>
               </div>
             )
@@ -122,13 +144,10 @@ const ReceptionGridRow: FC<ReceptionGridRowProps> = ({
           )}
         </div>
         <div className="font-nomal col-span-2 flex flex-wrap justify-start text-sm">
-          {categories?.map((categoryKey: never) => {
-            const category = MULTISELECT_ITEMS.filter(
-              (category) => category.value === categoryKey
-            )
+          {categoryObj?.map((category: any, index: number) => {
             return (
-              <div key={categoryKey} className="text-xs font-medium">
-                {category[0].label}
+              <div key={index} className="text-xs font-medium">
+                {category.label}
                 <span className="px-1 text-gray-500">|</span>
               </div>
             )

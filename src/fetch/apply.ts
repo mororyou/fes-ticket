@@ -58,6 +58,7 @@ export const getApplies = async (boothId: string, date: string) => {
     .from('applies')
     .select('*')
     .neq('status', 99)
+    .order('created_at', { ascending: true })
 
   if (error) throw new Error(error.message)
 
@@ -69,6 +70,7 @@ export const getCancelApplies = async () => {
     .from('applies')
     .select('*')
     .eq('status', 99)
+    .order('created_at', { ascending: true })
 
   if (error) throw new Error(error.message)
 
