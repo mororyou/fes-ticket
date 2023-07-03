@@ -463,7 +463,7 @@ export const ReceptionBody = (body: any) => {
                     }}
                   >
                     <a
-                      href="#"
+                      href="https://fukuoka-creators.studio.site/"
                       style={{
                         maxWidth: '300px',
                         width: '85%',
@@ -503,7 +503,7 @@ export const ReceptionBody = (body: any) => {
                     }}
                   >
                     <a
-                      href="#"
+                      href="https://libecity.com/room_list?room_id=DlVCa6dA8OyfHR9lDknV"
                       style={{
                         maxWidth: '300px',
                         width: '85%',
@@ -607,7 +607,7 @@ export const ReceptionBody = (body: any) => {
                     }}
                   >
                     <a
-                      href="#"
+                      href={`${process.env.NEXT_PUBLIC_DOMAIN}apply/complete/${body.uuid}`}
                       style={{
                         maxWidth: '300px',
                         width: '85%',
