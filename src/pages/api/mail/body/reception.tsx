@@ -15,161 +15,686 @@ export const ReceptionBody = (body: any) => {
     categoryObj.push(...res)
   })
 
-  const wrap = {
-    maxWidth: '640px',
-    minWidth: '480px',
-    backgroundColor: '#ea339a7d',
-    padding: '28px',
-    margin: '0 auto',
-  }
-
-  const wrapInner = {
-    backgroundColor: '#fff',
-  }
-
-  const row = {
-    padding: '10px',
-    display: 'table-cell',
-  }
-
-  const thanks = {
-    fontSize: '16px',
-    fontWeight: 700,
-    margin: '18px auto',
-    color: '#656363',
-  }
-
-  const itemLabel = {
-    fontSize: '14px',
-    fontWeight: 600,
-    marginBottom: '2px',
-    lineHeight: '20px',
-    color: '#656363',
-  }
-
-  const itemDescription = {
-    fontSize: '14px',
-    fontWeight: 400,
-    marginBottom: '12px',
-    lineHeight: '16px',
-    paddingLeft: '4px',
-    color: '#3f3f3f',
-  }
-
-  const item = {
-    marginRight: '8px',
-  }
-
-  const linkBtn = {
-    fontSize: '14px',
-    fontWeight: 700,
-    padding: '16px 64px',
-    backgroundColor: '#ea339a',
-    color: '#fff',
-    borderRadius: '4px',
-    margin: '24px 0',
-    lineHeight: '80px',
-    textDecolation: 'none',
-  }
-
-  const cancelBtn = {
-    fontSize: '14px',
-    fontWeight: 700,
-    padding: '16px 64px',
-    backgroundColor: '#D21577',
-    color: '#fff',
-    borderRadius: '4px',
-    margin: '0 0 24px',
-    lineHeight: '80px',
-    textDecolation: 'none',
-  }
-
-  const bold = {
-    fontWeight: 700,
-  }
+  const fontFamily =
+    'Hiragino Sans, Hiragino Kaku Gothic ProN, Meiryo, Osaka, sans-serif'
 
   return (
     <>
-      <table style={wrap}>
-        <tbody style={wrapInner}>
-          <tr style={row}>
-            <td>
-              <p style={itemDescription}>
-                この度は、【ITお悩み相談】へお申し込みいただき誠にありがとうございます。
-                <br />
-                以下の内容でご予約を承りましたのでご確認ください。
-                <br />
-                ※本メールは自動送信される確認メールです。ご返信は不要です。
-                <br />
-                予約が確定次第、【予約確定メール】をお送りいたしますので、しばらくお待ちいただきますようお願い申し上げます。
-              </p>
-              <p>
-                *****************************************************************
-                <br />
-              </p>
-              <p style={itemLabel}>お名前（リベシティ名）</p>
-              <p style={itemDescription}>{body.name}</p>
-              <p style={itemLabel}>リベシティプロフィールURL</p>
-              <p style={itemDescription}>{body.url}</p>
-              <p style={itemLabel}>メールアドレス</p>
-              <p style={itemDescription}>{body.email}</p>
-              <p style={itemLabel}>希望日時（複数選択可能）</p>
-              <p style={itemDescription}>
-                {dateObj.map((date: any, index: number) => (
-                  <span style={item} key={index}>
-                    ・{date.label}
-                  </span>
-                ))}
-              </p>
-              <p style={itemLabel}>相談カテゴリ（複数選択可能）</p>
-              <p style={itemDescription}>
-                {categoryObj.map((category: any, index: number) => (
-                  <span style={item} key={index}>
-                    ・{category.label}
-                  </span>
-                ))}
-              </p>
-              <p style={itemLabel}>相談内容（具体的にお願いします）</p>
-              <p style={itemDescription}>
-                {body.content ? body.content : '特になし'}
-              </p>
-              <p style={itemLabel}>その他</p>
-              <p style={itemDescription}>{body.etc ? body.etc : '特になし'}</p>
-              <br />
-              <p>
-                *****************************************************************
-                <br />
-              </p>
-              <p style={itemLabel}>
-                ■ITお悩み相談by福岡クリエイターズのWebサイトはこちら！
-              </p>
-              　
-              <a
-                href={`https://fukuoka-creators.studio.site/`}
-                target="_blank"
-                rel="noopener noreferrer"
+      <table
+        width="100%"
+        style={{
+          borderCollapse: 'collapse',
+          borderSpacing: 0,
+          border: 'none',
+          verticalAlign: 'top',
+          fontSize: '14px',
+          fontFamily: fontFamily,
+          backgroundColor: '#e3007f',
+          textAlign: 'center',
+        }}
+      >
+        <tr
+          style={{
+            fontSize: '14px',
+            fontFamily: fontFamily,
+            color: '#323333',
+          }}
+        >
+          <td
+            style={{
+              fontSize: '14px',
+              fontFamily: fontFamily,
+              color: '#323333',
+            }}
+          >
+            <table
+              style={{
+                margin: '0 auto',
+                borderCollapse: 'collapse',
+                borderSpacing: 0,
+                border: '0 none',
+                verticalAlign: 'top',
+                fontSize: '14px',
+                fontFamily: fontFamily,
+                color: '#323333',
+                width: '95%',
+                maxWidth: '640px',
+              }}
+            >
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
               >
-                https://fukuoka-creators.studio.site/
-              </a>
-              <p style={itemLabel}>＜予約内容の変更をしたい場合＞</p>
-              <p>
-                以下の「お申し込みをキャンセルする」ボタンよりキャンセルの上、再度お手続きをお願いいたします。
-              </p>
-              <br />
-              <br />
-              <br />
-              <br />
-              <a
-                href={`${process.env.NEXT_PUBLIC_DOMAIN}apply/complete/${body.uuid}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={cancelBtn}
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                    paddingBottom: '5px',
+                    paddingTop: '15px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                    }}
+                  >
+                    <img
+                      src="/images/logo.png"
+                      style={{
+                        width: '85%',
+                        margin: 0,
+                        padding: 0,
+                        border: '0 none',
+                        outline: 'none',
+                        lineHeight: '100%',
+                        textDecoration: 'none',
+                        verticalAlign: 'bottom',
+                        fontSize: '14px',
+                        fontFamily: fontFamily,
+                        color: '#323333',
+                      }}
+                    />
+                  </p>
+                  <table
+                    width="100%"
+                    style={{
+                      borderCollapse: 'collapse',
+                      borderSpacing: 0,
+                      border: 'none',
+                      verticalAlign: 'top',
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                    }}
+                  >
+                    <tr
+                      style={{
+                        fontSize: '14px',
+                        fontFamily: fontFamily,
+                        color: '#323333',
+                      }}
+                    >
+                      <td
+                        style={{
+                          fontSize: '14px',
+                          fontFamily: fontFamily,
+                          color: '#323333',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <h1
+                          style={{
+                            margin: 0,
+                            padding: 0,
+                            fontSize: '24px',
+                            fontFamily: fontFamily,
+                            color: '#fff',
+                            marginBottom: '5px',
+                            marginTop: '10px',
+                          }}
+                        >
+                          お申し込みを受け付けました
+                        </h1>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <table
+        width="100%"
+        style={{
+          borderCollapse: 'collapse',
+          borderSpacing: 0,
+          verticalAlign: 'top',
+          fontSize: '14px',
+          fontFamily: fontFamily,
+          color: '#323333',
+          textAlign: 'center',
+        }}
+      >
+        <tr
+          style={{
+            fontSize: '14px',
+            fontFamily: fontFamily,
+            color: '#323333',
+          }}
+        >
+          <td
+            style={{
+              fontSize: '14px',
+              fontFamily: fontFamily,
+              color: '#323333',
+            }}
+          >
+            <table
+              style={{
+                margin: '0 auto',
+                borderCollapse: 'collapse',
+                borderSpacing: 0,
+                border: '0 none',
+                verticalAlign: 'top',
+                fontSize: '14px',
+                fontFamily: fontFamily,
+                color: '#323333',
+                width: '95%',
+                maxWidth: '640px',
+              }}
+            >
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
               >
-                キャンセルの申し込みはこちら
-              </a>
-            </td>
-          </tr>
-        </tbody>
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                    paddingTop: '28px',
+                    textAlign: 'left',
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    この度は、【ITお悩み相談】へお申し込みいただき誠にありがとうございます。
+                    <br />
+                    以下の内容でご予約を承りましたのでご確認ください。
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '12px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    ※本メールは自動送信される確認メールです。ご返信は不要です。予約が確定次第、
+                    <strong>【予約確定メール】</strong>
+                    をお送りいたしますので、しばらくお待ちいただきますようお願い申し上げます。
+                  </p>
+                </td>
+              </tr>
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                  }}
+                >
+                  <hr
+                    style={{
+                      margin: '28px 0',
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      backgroundColor: '#ECEFF1',
+                      position: 'relative',
+                      height: '1px',
+                      border: 'none',
+                      width: '100%',
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                    paddingTop: '14px',
+                    textAlign: 'left',
+                  }}
+                >
+                  <h2
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '21.875px',
+                      fontFamily: fontFamily,
+                      color: '',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    お申し込み内容
+                  </h2>
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    お名前（リベシティ名）
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    {body.name}
+                  </p>
+                  {body.url && (
+                    <>
+                      <h3
+                        style={{
+                          marginBottom: '8px',
+                        }}
+                      >
+                        リベシティプロフィールURL
+                      </h3>
+                      <p
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          fontSize: fontFamily,
+                          color: '#323333',
+                          display: 'block',
+                          marginBottom: '14px',
+                        }}
+                      >
+                        <a href={body.url}>{body.url}</a>
+                      </p>
+                    </>
+                  )}
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    メールアドレス
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    {body.email}
+                  </p>
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    希望日時
+                  </h3>
+                  {dateObj.map((date: any, index: number) => (
+                    <span key={index}>
+                      <li>{date.label}</li>
+                    </span>
+                  ))}
+
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    相談カテゴリ
+                  </h3>
+                  {categoryObj.map((category: any, index: number) => (
+                    <span key={index}>
+                      <li>{category.label}</li>
+                    </span>
+                  ))}
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    相談内容（具体的にお願いします）
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    {body.content ? body.content : '特になし'}
+                  </p>
+                  <h3
+                    style={{
+                      marginBottom: '8px',
+                    }}
+                  >
+                    その他
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    {body.etc ? body.etc : '特になし'}
+                  </p>
+                </td>
+              </tr>
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                    textAlign: 'center',
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  ></p>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <a
+                      href="#"
+                      style={{
+                        maxWidth: '300px',
+                        width: '85%',
+                        margin: '0 1em',
+                        padding: '0.5em 1em',
+                        fontSize: '1.2em',
+                        fontFamily: fontFamily,
+                        color: '#FFF',
+                        textDecoration: 'none',
+                        borderRadius: '2px',
+                        display: 'inline-block',
+                        backgroundColor: '#e3007f',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '14px',
+                          display: 'inline-block',
+                          marginBottom: '-2px',
+                        }}
+                      >
+                        ITお悩み相談 by 福岡クリエイターズ
+                      </span>
+                      <br />
+                      Webサイトはこちら
+                    </a>
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <a
+                      href="#"
+                      style={{
+                        maxWidth: '300px',
+                        width: '85%',
+                        margin: '0 1em',
+                        padding: '0.5em 1em',
+                        fontSize: '1.2em',
+                        fontFamily: fontFamily,
+                        color: '#FFF',
+                        textDecoration: 'none',
+                        borderRadius: '2px',
+                        display: 'inline-block',
+                        backgroundColor: '#384860',
+                      }}
+                    >
+                      ユーザーコミュニティはこちら
+                    </a>
+                  </p>
+                </td>
+              </tr>
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    color: '#323333',
+                  }}
+                >
+                  <hr
+                    style={{
+                      margin: '28px 0',
+                      padding: 0,
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      backgroundColor: '#ECEFF1',
+                      position: 'relative',
+                      height: '1px',
+                      border: 'none',
+                      width: '100%',
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: fontFamily,
+                    paddingTop: '14px',
+                    paddingBottom: '28px',
+                    color: '#323333',
+                    textAlign: 'left',
+                  }}
+                >
+                  <h2
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '21.875px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    予約内容の変更をしたい場合
+                  </h2>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    以下の「お申し込みをキャンセルする」ボタンよりキャンセルの上、再度お手続きをお願いいたします。
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '14px',
+                      fontFamily: fontFamily,
+                      color: '#323333',
+                      display: 'block',
+                      marginBottom: '14px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <a
+                      href="#"
+                      style={{
+                        maxWidth: '300px',
+                        width: '85%',
+                        margin: '0 1em',
+                        padding: '1em',
+                        fontSize: '1.2em',
+                        fontFamily: fontFamily,
+                        color: '#e3007f',
+                        textDecoration: 'none',
+                        border: 'solid 1px #e3007f',
+                        borderRadius: '2px',
+                        display: 'inline-block',
+                        backgroundColor: '#fff',
+                      }}
+                    >
+                      お申し込みをキャンセルする
+                    </a>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <table
+        width="100%"
+        style={{
+          borderCollapse: 'collapse',
+          borderSpacing: 0,
+          border: '0 none',
+          verticalAlign: 'top',
+          fontSize: '14px',
+          fontFamily: fontFamily,
+          color: '#414C58',
+          backgroundColor: '#e3007f',
+          textAlign: 'center',
+        }}
+      >
+        <tr
+          style={{
+            fontSize: '14px',
+            fontFamily: fontFamily,
+            color: '#595959',
+          }}
+        >
+          <td
+            style={{
+              fontSize: '14px',
+              fontFamily: fontFamily,
+              color: '#323333',
+            }}
+          >
+            <table
+              style={{
+                margin: '0 auto',
+                borderCollapse: 'collapse',
+                borderSpacing: 0,
+                border: '0 none',
+                verticalAlign: 'top',
+                fontSize: '14px',
+                fontFamily: fontFamily,
+                color: '#595959',
+                width: '95%',
+                maxWidth: '640px',
+              }}
+            >
+              <tr
+                style={{
+                  fontSize: '14px',
+                  fontFamily: fontFamily,
+                  color: '#323333',
+                }}
+              >
+                <td
+                  style={{
+                    fontSize: '12px',
+                    fontFamily: fontFamily,
+                    color: '#595959',
+                    paddingBottom: '14px',
+                    paddingTop: '28px',
+                    textAlign: 'left',
+                  }}
+                ></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
       </table>
     </>
   )
