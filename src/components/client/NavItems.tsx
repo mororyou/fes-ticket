@@ -1,11 +1,13 @@
 import { NaviItem } from '@/types/types'
 import {
   IconCalendarEvent,
+  IconCircleX,
   IconDashboard,
   IconFlag,
+  IconHomeCancel,
   IconListNumbers,
   IconSignature,
-  IconUser
+  IconUser,
 } from '@tabler/icons'
 
 export const NavItems: NaviItem[] = [
@@ -26,6 +28,12 @@ export const NavItems: NaviItem[] = [
     title: 'スケジュール',
     color: 'blue',
     icon: <IconCalendarEvent size={16} />,
+  },
+  {
+    pageId: 'cancels',
+    title: 'キャンセル一覧',
+    color: 'blue',
+    icon: <IconCircleX size={16} />,
   },
   {
     pageId: 'users',

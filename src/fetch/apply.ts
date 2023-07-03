@@ -64,6 +64,17 @@ export const getApplies = async (boothId: string, date: string) => {
   return data
 }
 
+export const getCancelApplies = async () => {
+  const { data, error } = await supabase
+    .from('applies')
+    .select('*')
+    .eq('status', 99)
+
+  if (error) throw new Error(error.message)
+
+  return data
+}
+
 export const updateStatusApplies = async (applyId: string, status: number) => {
   const { data, error } = await supabase
     .from('applies')
