@@ -18,109 +18,17 @@ export default function reception(req: NextApiRequest, res: NextApiResponse) {
 
   const body = ReceptionBody(req.body)
   const msgBody = ReactDOMServer.renderToString(body)
-
   const message = `
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-    <html  xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=iso-2022-jp">
-      <meta name="viewport" content="width=device-width" />
-      <title>Title</title>
-
-      <style>
-        body {
-          width: 100% !important;
-          min-width: 100%;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-          margin: 0;
-          padding: 0;
-        }
-
-        table {
-          border-spacing: 0;
-          border-collapse: collapse;
-        }
-
-        td {
-          word-wrap: break-word;
-          -webkit-hyphens: auto;
-          -moz-hyphens: auto;
-          hyphens: auto;
-          border-collapse: collapse !important;
-        }
-
-        table, tr,
-          td {
-          padding: 0;
-          vertical-align: top;
-          text-align: left;
-        }
-
-        img {
-          outline: none;
-          text-decoration: none;
-          -ms-interpolation-mode: bicubic;
-          width: auto;
-          clear: both;
-          display: block;
-        }
-        a {
-          img {
-            outline: none;
-            text-decoration: none;
-            -ms-interpolation-mode: bicubic;
-            width: auto;
-            clear: both;
-            display: block;
-            border: none;
-          }
-        }
-
-        /* =========================================================
-        outlook対策
-        ========================================================= */
-
-        #outlook a {
-          padding: 0;
-        }
-
-        body.outlook p {
-          display: inline !important;
-        }
-
-        /* =========================================================
-        ホットメールで画面いっぱいに表示ようにする
-        ========================================================= */
-
-        .ReadMsgBody {
-          width: 100%;
-        }
-        .ExternalClass{
-          width:100%;
-        }
-
-        .ExternalClass,
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td,
-        .ExternalClass div{
-          line-height: 100%;
-        }
-
-        #backgroundTable {
-          margin: 0;
-          Margin: 0;
-          padding: 0;
-          width: 100% !important;
-          line-height: 100% !important;
-        }
-      </style>
-    </head>
-    <body>
+    <html lang="ja">
+      <head>
+        <meta name="viewport" content="target-densitydpi=device-dpi,width=device-width,maximum-scale=1.0,user-scalable=yes"/>
+        <meta http-equiv="Content-Language" content="ja"/>
+        <meta charset="UTF-8"/>
+        <title>【ITお悩み相談by福岡クリエイターズ】お申込み受付完了のお知らせ</title>
+      </head>
+      <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="width: 100%;font-size: 14px;font-family: Hiragino Sans, Hiragino Kaku Gothic ProN, Meiryo, Osaka, sans-serif;color: #323333">
         ${msgBody}
-    </body>
+      </body>
     </html>`
 
   const toMails = []
@@ -131,7 +39,6 @@ export default function reception(req: NextApiRequest, res: NextApiResponse) {
     from: FROM_MAIL_ADDRESS,
     to: toMails,
     subject: `【ITお悩み相談by福岡クリエイターズ】お申込み受付完了のお知らせ`,
-    text: req.body.name + ' | Sent from: ' + req.body.email,
     html: message,
   }
 
