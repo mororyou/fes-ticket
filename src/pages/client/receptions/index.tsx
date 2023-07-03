@@ -7,7 +7,6 @@ import { Apply } from '@/types/types'
 import { Button, Divider, Paper, SegmentedControl } from '@mantine/core'
 import { IconListNumbers } from '@tabler/icons'
 import dayjs from 'dayjs'
-import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
 
 const Receptions = () => {
