@@ -57,6 +57,7 @@ export const getApplies = async (boothId: string, date: string) => {
   const { data, error } = await supabase
     .from('applies')
     .select('*')
+    .neq('status', 90)
     .neq('status', 99)
     .order('created_at', { ascending: true })
 
@@ -85,7 +86,6 @@ export const updateStatusApplies = async (applyId: string, status: number) => {
 
   if (error) throw new Error(error.message)
 
-  console.log('updated status')
   return data
 }
 
