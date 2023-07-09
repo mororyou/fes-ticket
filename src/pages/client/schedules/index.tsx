@@ -31,6 +31,7 @@ const Schedules = () => {
   const [draggedEvent, setDraggedEvent] = useState<any>(null)
   const [opend, { open, close }] = useDisclosure(false)
   const [apply, setApply] = useState<any>(null)
+  const [status, setStatus] = useState<boolean>(false)
 
   const { createSchedule, updatedSchedule } = useScheduleMutate()
   const { updatedApply } = useApplyMutate()
@@ -84,6 +85,7 @@ const Schedules = () => {
         categories: dropData.categories,
         content: dropData.content,
         etc: dropData.etc,
+        apply_id: dropData?.uuid,
         status: dropData.status,
         engineer: dropData.engineer,
       })
@@ -128,6 +130,7 @@ const Schedules = () => {
             categories: draggedEvent?.categories,
             content: draggedEvent?.content,
             etc: draggedEvent?.etc,
+            apply_id: draggedEvent?.uuid,
             status: 1,
             engineer: '',
             designer: '',
@@ -146,9 +149,14 @@ const Schedules = () => {
   const onDragStart = useCallback((event: any) => setDraggedEvent(event), [])
 
   const onDoubleClickEvent = useCallback(
-    (event: Object): void => {
+    (event: any): void => {
       open()
       setApply(event)
+      if (event.status === 1) {
+        setStatus(false)
+      } else {
+        setStatus(true)
+      }
     },
     [open]
   )
@@ -235,7 +243,13 @@ const Schedules = () => {
           </div>
         </Paper>
       </div>
-      <DetailModal opend={opend} close={close} apply={apply} />
+      <DetailModal
+        opend={opend}
+        close={close}
+        schedule={apply}
+        status={status}
+        setStatus={setStatus}
+      />
     </ClientLayout>
   )
 }

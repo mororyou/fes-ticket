@@ -1,16 +1,26 @@
 import { Button, Modal, Select } from '@mantine/core'
 import { Schedule } from '@/types/types'
 import dayjs from 'dayjs'
-import { useState, FC } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
+import { getApply } from '@/fetch/apply'
+import { updateScheduleStatus } from '@/fetch/schedule'
 
 type Props = {
   opend: any
   close: any
-  apply: Schedule
+  schedule: Schedule
+  status: boolean
+  setStatus: any
 }
 
-const DetailModal: FC<Props> = ({ opend, close, apply }) => {
+const DetailModal: FC<Props> = ({
+  opend,
+  close,
+  schedule,
+  status,
+  setStatus,
+}) => {
   const [engineer, setEnginner] = useState<string | null>('')
   const [designer, setDesigner] = useState<string | null>('')
 
@@ -18,16 +28,25 @@ const DetailModal: FC<Props> = ({ opend, close, apply }) => {
 
   const mailNoticeHandler = async () => {
     if (confirm('スケジュール確定メールを送信しますか？　【テスト中未実装】')) {
-      // await fetch('/api/mail/notice', {
-      //   method: 'POST',
-      //   headers: {
-      //     Accept: 'application/json, text/plain, */*',
-      //     'Content-Type': 'application/json',
-      //   },
-      // }).then(async (res) => {
-      //   if (res.status === 200) {
-      //   }
-      // })
+      const apply = await getApply(schedule.apply_id)
+      const sendData = {
+        schedule: schedule,
+        apply: apply,
+      }
+      await fetch('/api/mail/notice', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sendData),
+      }).then(async (res) => {
+        if (res.status === 200) {
+          alert('メールの送信が完了しました')
+          setStatus(true)
+          updateScheduleStatus(schedule.id, 2)
+        }
+      })
     }
   }
 
@@ -38,14 +57,14 @@ const DetailModal: FC<Props> = ({ opend, close, apply }) => {
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           名前
         </label>
-        <div className="col-span-8 text-xs text-gray-700">{apply?.user}</div>
+        <div className="col-span-8 text-xs text-gray-700">{schedule?.user}</div>
         {/* 名前 */}
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           プロフィールURL
         </label>
         <div className="col-span-8 text-xs text-gray-700">
-          {apply?.url ? (
-            <a href={apply.url}>リベプロフィールリンク</a>
+          {schedule?.url ? (
+            <a href={schedule.url}>リベプロフィールリンク</a>
           ) : (
             'リベシティ外ユーザーもしくはプロフィールURL未登録'
           )}
@@ -55,15 +74,15 @@ const DetailModal: FC<Props> = ({ opend, close, apply }) => {
           日付
         </label>
         <div className="col-span-8 my-auto text-sm text-gray-700">
-          {dayjs(apply?.start).format(' YYYY/MM/DD')}
+          {dayjs(schedule?.start).format(' YYYY/MM/DD')}
         </div>
         {/* 時間 */}
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           時間
         </label>
         <div className="col-span-8 text-sm text-gray-700">
-          {dayjs(apply?.start).format('HH:mm')} -{' '}
-          {dayjs(apply?.end).format('HH:mm')}
+          {dayjs(schedule?.start).format('HH:mm')} -{' '}
+          {dayjs(schedule?.end).format('HH:mm')}
         </div>
 
         {/*  */}
@@ -75,12 +94,14 @@ const DetailModal: FC<Props> = ({ opend, close, apply }) => {
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           相談内容
         </label>
-        <div className="col-span-8 text-xs text-gray-700">{apply?.content}</div>
+        <div className="col-span-8 text-xs text-gray-700">
+          {schedule?.content}
+        </div>
 
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           その他
         </label>
-        <div className="col-span-8 text-xs text-gray-700">{apply?.etc}</div>
+        <div className="col-span-8 text-xs text-gray-700">{schedule?.etc}</div>
 
         {/* 担当者 - enginner */}
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
@@ -98,18 +119,22 @@ const DetailModal: FC<Props> = ({ opend, close, apply }) => {
         </div>
       </div>
       <div className="flex w-full justify-between">
-        {apply?.status === 1 && (
-          <Button type="button">対応者登録(未実装)</Button>
+        <Button type="button">対応者登録(未実装)</Button>
+        {!status ? (
+          <Button
+            color="grape"
+            type="button"
+            onClick={() => {
+              mailNoticeHandler()
+            }}
+          >
+            メール送信
+          </Button>
+        ) : (
+          <Button color="dark" disabled>
+            送信済み
+          </Button>
         )}
-        <Button
-          color="grape"
-          onClick={(e: any) => {
-            e.preventDefaul()
-            mailNoticeHandler()
-          }}
-        >
-          メール送信
-        </Button>
       </div>
     </Modal>
   )

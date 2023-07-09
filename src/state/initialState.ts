@@ -37,6 +37,7 @@ export const ClientState = {
 
 export const ScheduleState = {
   id: 0,
+  apply_id: '',
   title: '',
   user: '',
   date: '',
