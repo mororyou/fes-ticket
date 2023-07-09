@@ -119,6 +119,7 @@ export type Event = {
 
 export type Schedule = {
   id: number
+  apply_id: string
   title: string
   user: string
   date: string
@@ -139,6 +140,7 @@ export type Schedule = {
 
 export type EditedSchedule = {
   id: number
+  apply_id: string
   title: string
   user: string
   date: string

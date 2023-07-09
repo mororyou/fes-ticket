@@ -102,6 +102,7 @@ const useStore = create<State>((set) => ({
     set({
       editedSchedule: {
         id: payload.id,
+        apply_id: payload.apply_id,
         title: payload.title,
         user: payload.user,
         date: payload.date,
