@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -5,7 +6,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const { message } = req.body
+    // const { message } = req.body
+    const date = dayjs().format('YYYY年MM月DD日 hh時mm分')
+    const message = `${date} に新規申し込みがありました`
     const CHANNEL_ID = process.env.NEXT_PUBLIC_DISCORD_CHANNEL_ID as string
     const token = process.env.NEXT_PUBLIC_DISCORD_BOT_TOKEN as string
     try {
@@ -14,7 +17,7 @@ export default async function handler(
         {
           method: 'POST',
           body: JSON.stringify({
-            content: '新規申し込みがありました！',
+            content: message,
           }),
           headers: {
             Authorization: `Bot ${token}`,
