@@ -41,6 +41,15 @@ export const useApplyMutate = () => {
         }).then(async (res) => {
           if (res.status === 200) {
             console.log('送信完了!!!')
+            await fetch('/api/discord', {
+              method: 'POST',
+            })
+              .then((res: Response) => {
+                console.log(res)
+              })
+              .catch((error: any) => {
+                console.log(error)
+              })
             reset()
             router.push(`/apply/complete/${data[0].uuid}`)
           }
