@@ -8,7 +8,9 @@ export default async function handler(
   if (req.method === 'POST') {
     // const { message } = req.body
     const date = dayjs().format('YYYY年MM月DD日 hh時mm分')
-    const message = `${date} に新規申し込みがありました`
+    const message = `
+      ${date} に新規申し込みがありました\nhttps://libecity-fes-ticket.vercel.app/client/schedules
+    `
     const CHANNEL_ID = process.env.NEXT_PUBLIC_DISCORD_CHANNEL_ID as string
     const token = process.env.NEXT_PUBLIC_DISCORD_BOT_TOKEN as string
     try {
