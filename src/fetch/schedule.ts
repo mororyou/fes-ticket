@@ -23,3 +23,21 @@ export const updateScheduleStatus = async (id: number, status: number) => {
 
   return data
 }
+
+export const updateScheduleUser = async (
+  id: number,
+  eng: string | undefined | null,
+  deg: string | undefined | null
+) => {
+  const { data, error } = await supabase
+    .from('schedules')
+    .update({
+      designer: deg,
+      engineer: eng,
+    })
+    .eq('id', id)
+
+  if (error) throw new Error(error.message)
+
+  return data
+}

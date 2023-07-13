@@ -1,10 +1,10 @@
 import { Button, Modal, Select } from '@mantine/core'
-import { Schedule } from '@/types/types'
+import { Client, Schedule } from '@/types/types'
 import dayjs from 'dayjs'
 import { useState, useEffect, FC } from 'react'
 import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
 import { getApply } from '@/fetch/apply'
-import { updateScheduleStatus } from '@/fetch/schedule'
+import { updateScheduleStatus, updateScheduleUser } from '@/fetch/schedule'
 
 type Props = {
   opend: any
@@ -21,10 +21,15 @@ const DetailModal: FC<Props> = ({
   status,
   setStatus,
 }) => {
-  const [engineer, setEnginner] = useState<string | null>('')
-  const [designer, setDesigner] = useState<string | null>('')
+  const [engineer, setEnginner] = useState<string | null>()
+  const [designer, setDesigner] = useState<string | null>()
 
   const { data: clients } = useQueryClientSelector()
+
+  useEffect(() => {
+    setEnginner(schedule?.engineer)
+    setDesigner(schedule?.designer)
+  }, [schedule])
 
   const mailNoticeHandler = async () => {
     if (confirm('スケジュール確定メールを送信しますか？　【テスト中未実装】')) {
@@ -47,6 +52,17 @@ const DetailModal: FC<Props> = ({
           updateScheduleStatus(schedule.id, 2)
         }
       })
+    }
+  }
+
+  const personHandler = async () => {
+    if (confirm('担当者を登録してもよろしいですか？')) {
+      try {
+        await updateScheduleUser(schedule.id, engineer, designer)
+        alert('登録しました')
+      } catch (error) {
+        alert('エラーが発生しました')
+      }
     }
   }
 
@@ -108,18 +124,33 @@ const DetailModal: FC<Props> = ({
           担当者
         </label>
         <div className="col-span-8 my-auto text-sm text-gray-700">
-          <Select data={clients as []} onChange={setEnginner} />
+          <Select
+            data={clients as []}
+            onChange={setEnginner}
+            value={engineer}
+          />
         </div>
         {/* 担当者 - designer */}
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           担当者
         </label>
         <div className="col-span-8 my-auto text-sm text-gray-700">
-          <Select data={clients as []} onChange={setDesigner} />
+          <Select
+            data={clients as []}
+            onChange={setDesigner}
+            value={designer}
+          />
         </div>
       </div>
       <div className="flex w-full justify-between">
-        <Button type="button">対応者登録(未実装)</Button>
+        <Button
+          type="button"
+          onClick={() => {
+            personHandler()
+          }}
+        >
+          対応者登録(未実装)
+        </Button>
         {!status ? (
           <Button
             color="grape"
