@@ -6,7 +6,7 @@ export const useQueryClientSelector = () => {
   const getClients = async () => {
     const { data, error } = await supabase
       .from('clients')
-      .select('value:id, label:name')
+      .select(`value:name, label:name`)
       .order('id', { ascending: true })
 
     if (error) throw Error(error.message)
