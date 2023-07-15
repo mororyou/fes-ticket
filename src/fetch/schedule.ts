@@ -41,3 +41,11 @@ export const updateScheduleUser = async (
 
   return data
 }
+
+export const getYoyakuSchedules = async () => {
+  const { data, error } = await supabase.from('view_yoyaku_tantou')
+
+  if (error) throw new Error(error.message)
+
+  return data
+}
