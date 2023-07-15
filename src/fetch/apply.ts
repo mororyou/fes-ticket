@@ -59,7 +59,7 @@ export const getApplies = async (boothId: string, date: string) => {
     .select('*')
     .neq('status', 90)
     .neq('status', 99)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   if (error) throw new Error(error.message)
 
