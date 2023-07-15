@@ -1,4 +1,4 @@
-import { MULTISELECT_ITEMS, SELECTER_DAYS } from '@/constant/const'
+import { MULTISELECT_ITEMS, FILTER_SELECTER_DAYS } from '@/constant/const'
 import { getNextSeq } from '@/fetch/apply'
 import { getBooth } from '@/fetch/booth'
 import { useApplyMutate } from '@/hooks/apply/useMutate'
@@ -165,9 +165,9 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
               onChange={setDates}
             >
               <Group className="grid w-full grid-cols-2">
-                <div className="col-span-1"></div>
-                {SELECTER_DAYS &&
-                  SELECTER_DAYS.map((date, index) => {
+                {/* <div className="col-span-1"></div> */}
+                {FILTER_SELECTER_DAYS &&
+                  FILTER_SELECTER_DAYS.map((date, index) => {
                     return (
                       <div className="col-span-1" key={index}>
                         <Checkbox value={date.value} label={date.label} />
