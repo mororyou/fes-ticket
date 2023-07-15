@@ -24,18 +24,21 @@ const DetailModal: FC<Props> = ({
 }) => {
   const [engineer, setEnginner] = useState<string | null>()
   const [designer, setDesigner] = useState<string | null>()
-  console.log(schedule)
+  const [categories, setCategories] = useState<any[]>()
+
   const { data: clients } = useQueryClientSelector()
 
-  const tmpCategory = schedule.categories as []
-  const categoryObj: any[] = []
-  tmpCategory.map((category) => {
-    const res = MULTISELECT_ITEMS.filter((rec) => rec.value == category)
-    categoryObj.push(...res)
-  })
   useEffect(() => {
     setEnginner(schedule?.engineer)
     setDesigner(schedule?.designer)
+    const tmpCategory = schedule?.categories as []
+    const categoryObj: any[] = []
+    tmpCategory?.map((category) => {
+      const res = MULTISELECT_ITEMS.filter((rec) => rec.value == category)
+      categoryObj.push(...res)
+    })
+    setCategories(categoryObj)
+    console.log(schedule)
   }, [schedule])
 
   const mailNoticeHandler = async () => {
@@ -113,7 +116,7 @@ const DetailModal: FC<Props> = ({
           相談カテゴリ
         </label>
         <div className="col-span-8 text-xs text-gray-700">
-          {categoryObj.map((category: any, index: number) => (
+          {categories?.map((category: any, index: number) => (
             <span key={index}>
               <li>{category.label}</li>
             </span>
