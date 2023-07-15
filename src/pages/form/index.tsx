@@ -165,7 +165,7 @@ const Form: FC<Props> = ({ id, seq, questionnaire, booth }) => {
               onChange={setDates}
             >
               <Group className="grid w-full grid-cols-2">
-                {/* <div className="col-span-1"></div> */}
+                <div className="col-span-1"></div>
                 {FILTER_SELECTER_DAYS &&
                   FILTER_SELECTER_DAYS.map((date, index) => {
                     return (
