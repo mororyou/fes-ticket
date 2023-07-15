@@ -5,6 +5,7 @@ import { useState, useEffect, FC } from 'react'
 import { useQueryClientSelector } from '@/hooks/client/useQueryClientSelector'
 import { getApply } from '@/fetch/apply'
 import { updateScheduleStatus, updateScheduleUser } from '@/fetch/schedule'
+import { MULTISELECT_ITEMS } from '@/constant/const'
 
 type Props = {
   opend: any
@@ -23,9 +24,15 @@ const DetailModal: FC<Props> = ({
 }) => {
   const [engineer, setEnginner] = useState<string | null>()
   const [designer, setDesigner] = useState<string | null>()
-
+  console.log(schedule)
   const { data: clients } = useQueryClientSelector()
 
+  const tmpCategory = schedule.categories as []
+  const categoryObj: any[] = []
+  tmpCategory.map((category) => {
+    const res = MULTISELECT_ITEMS.filter((rec) => rec.value == category)
+    categoryObj.push(...res)
+  })
   useEffect(() => {
     setEnginner(schedule?.engineer)
     setDesigner(schedule?.designer)
@@ -105,7 +112,13 @@ const DetailModal: FC<Props> = ({
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           相談カテゴリ
         </label>
-        <div className="col-span-8 text-xs text-gray-700"></div>
+        <div className="col-span-8 text-xs text-gray-700">
+          {categoryObj.map((category: any, index: number) => (
+            <span key={index}>
+              <li>{category.label}</li>
+            </span>
+          ))}
+        </div>
 
         <label className="font-sm col-span-4 my-auto font-semibold text-gray-700">
           相談内容
