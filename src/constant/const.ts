@@ -24,12 +24,6 @@ export const DATES = [
 ]
 export const FILTER_SELECTER_DAYS = [
   {
-    label: '7/16(日) AM',
-    value: '2023-07-16-AM',
-    date: '2023/7/16',
-    timezone: 'AM',
-  },
-  {
     label: '7/16(日) PM',
     value: '2023-07-16-PM',
     date: '2023/7/16',
