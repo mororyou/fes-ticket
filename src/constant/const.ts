@@ -23,12 +23,12 @@ export const DATES = [
   { label: '7月17日(月)', value: '2023-07-17' },
 ]
 export const FILTER_SELECTER_DAYS = [
-  {
-    label: '7/16(日) PM',
-    value: '2023-07-16-PM',
-    date: '2023/7/16',
-    timezone: 'PM',
-  },
+  // {
+  //   label: '7/16(日) PM',
+  //   value: '2023-07-16-PM',
+  //   date: '2023/7/16',
+  //   timezone: 'PM',
+  // },
   {
     label: '7/17(月) AM',
     value: '2023-07-17-AM',
