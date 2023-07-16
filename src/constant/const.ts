@@ -29,12 +29,12 @@ export const FILTER_SELECTER_DAYS = [
   //   date: '2023/7/16',
   //   timezone: 'PM',
   // },
-  {
-    label: '7/17(月) AM',
-    value: '2023-07-17-AM',
-    date: '2023/7/17',
-    timezone: 'AM',
-  },
+  // {
+  //   label: '7/17(月) AM',
+  //   value: '2023-07-17-AM',
+  //   date: '2023/7/17',
+  //   timezone: 'AM',
+  // },
   {
     label: '7/17(月) PM',
     value: '2023-07-17-PM',
