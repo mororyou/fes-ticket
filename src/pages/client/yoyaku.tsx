@@ -1,4 +1,4 @@
-import { getYoyaku02Schedules } from '@/fetch/schedule'
+import { getYoyakuSchedules } from '@/fetch/schedule'
 import ClientLayout from '@/layout/client'
 import { Divider, Paper } from '@mantine/core'
 import dayjs from 'dayjs'
@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getYoyaku02Schedules()
+      const res = await getYoyakuSchedules()
       setReceptions(res)
       // setReceptions(res)
     }
