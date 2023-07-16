@@ -49,3 +49,11 @@ export const getYoyakuSchedules = async () => {
 
   return data
 }
+
+export const getYoyaku02Schedules = async () => {
+  const { data, error } = await supabase.from('view_yoyaku_tantou０２')
+
+  if (error) throw new Error(error.message)
+
+  return data
+}
